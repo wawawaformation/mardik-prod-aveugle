@@ -3,6 +3,23 @@
 Format : le plus récent en premier. Chaque entrée référence le test qui
 spécifiait le comportement attendu.
 
+## 2026-09-14 11:39 CEST — Instrumentation du chemin d'échec (métrique errors_total + log turn.failed)
+
+En revue de la checklist "Instrumenter l'application (traces, métriques,
+logs structurés)" du brief : le compteur `errors_total` (`telemetry.py`)
+existait mais n'était jamais incrémenté, et aucun log structuré n'était émis
+quand un tour échouait (seul le chemin de succès avait `turn.completed`).
+Un incident réel (ex. timeout LLM) restait donc invisible côté métriques et
+logs, malgré la trace (les spans OTel marquent déjà l'erreur automatiquement
+sur exception non interceptée).
+
+Corrigé (`agent.py::run_turn`) : le corps du tour est encapsulé dans un
+`try/except` qui, en cas d'exception, incrémente `errors_total` (avec
+`session_id` et `error.type` en attributs) et journalise un événement
+`turn.failed` structuré (session_id, durée, type et message d'erreur) avant
+de relever l'exception. Tests ajoutés dans `tests/unit/test_agent_errors.py` :
+`test_turn_failure_increments_error_counter`, `test_turn_failure_is_logged_structured`.
+
 ## 2026-09-14 11:32 CEST — Tests d'intégration détectant les incidents via rejeu de session
 
 Quatre incidents, jusqu'ici vérifiés uniquement par des tests unitaires,

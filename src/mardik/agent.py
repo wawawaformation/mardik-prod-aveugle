@@ -84,13 +84,28 @@ class Agent:
             store.append(session_id, {"role": "user", "content": user_message})
             store.record_turn(session_id)
 
-            reply = self._invoke_llm(store.history(session_id))
+            try:
+                reply = self._invoke_llm(store.history(session_id))
 
-            text = reply.content
-            for call in reply.tool_calls:
-                text = self._dispatch_tool(call)
+                text = reply.content
+                for call in reply.tool_calls:
+                    text = self._dispatch_tool(call)
 
-            store.append(session_id, {"role": "assistant", "content": text})
+                store.append(session_id, {"role": "assistant", "content": text})
+            except Exception as exc:
+                elapsed_ms = (time.perf_counter() - start) * 1000.0
+                self.telemetry.errors.add(
+                    1, attributes={"session_id": session_id, "error.type": type(exc).__name__}
+                )
+                self.telemetry.logger.error(
+                    "turn.failed",
+                    session_id=session_id,
+                    elapsed_ms=elapsed_ms,
+                    error_type=type(exc).__name__,
+                    error=str(exc),
+                )
+                raise
+
             elapsed_ms = (time.perf_counter() - start) * 1000.0
             self.telemetry.record_latency(elapsed_ms, session_id=session_id)
             self.telemetry.logger.info(
