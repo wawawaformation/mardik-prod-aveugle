@@ -106,8 +106,8 @@ class _NoOpSpan:
     def __enter__(self) -> "_NoOpSpan":
         return self
 
-    def __exit__(self, *exc: object) -> bool:
-        return False
+    def __exit__(self, *exc: object) -> None:
+        return None
 
     def set_attribute(self, *args: object, **kwargs: object) -> None:
         pass

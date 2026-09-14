@@ -3,6 +3,15 @@
 Format : le plus récent en premier. Chaque entrée référence le test qui
 spécifiait le comportement attendu.
 
+## 2026-09-14 12:19 CEST — Correctif mypy sur _NoOpSpan.__exit__
+
+Repéré en tâche de fond depuis la correction des incidents unitaires (mis
+de côté à l'époque, hors périmètre) : `_NoOpSpan.__exit__` déclarait un
+retour `bool` alors qu'il renvoie toujours `False`, ce que mypy signale
+comme dangereux (`exit-return`) — un `bool` non littéral laisse penser que
+le context manager pourrait avaler des exceptions. Corrigé : retour `None`.
+`uv run mypy src` est maintenant propre.
+
 ## 2026-09-14 12:15 CEST — La CI démarre maintenant un vrai Jaeger
 
 Suite à l'entrée précédente : `test_live_telemetry.py` restait exclu de la
