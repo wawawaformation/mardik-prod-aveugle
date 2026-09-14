@@ -89,6 +89,7 @@ def build_telemetry(
     metric_reader: MetricReader | None = None,
     level: str = "INFO",
     service_name: str = "mardik",
+    environment: str = "development",
     extra_span_exporters: list[SpanExporter] | None = None,
 ) -> Telemetry:
     """Build a self-contained Telemetry bundle.
@@ -96,9 +97,17 @@ def build_telemetry(
     Defaults to console exporters; tests pass in-memory exporters/readers.
     ``extra_span_exporters`` reçoit chacun son propre SpanProcessor, en plus
     de celui de ``span_exporter`` (ex. exporter aussi vers Langfuse).
+
+    ``environment`` est posé une fois comme attribut de Resource (donc hérité
+    par tous les spans sans le répéter) : convention OTel standard
+    (``deployment.environment.name``), reconnue nativement par Langfuse et
+    affichée comme tag de service dans Jaeger — c'est le filtre le plus
+    rentable pour ne pas mélanger dev/staging/prod dans une liste de traces.
     """
     configure_logging(level)
-    resource = Resource.create({"service.name": service_name})
+    resource = Resource.create(
+        {"service.name": service_name, "deployment.environment.name": environment}
+    )
 
     tracer_provider = TracerProvider(resource=resource)
     tracer_provider.add_span_processor(
@@ -143,6 +152,7 @@ def _build_langfuse_span_exporter(
 def build_default_telemetry(
     level: str = "INFO",
     service_name: str = "mardik",
+    environment: str = "development",
     langfuse_host: str = "",
     langfuse_public_key: str = "",
     langfuse_secret_key: str = "",
@@ -167,6 +177,7 @@ def build_default_telemetry(
         metric_reader=PeriodicExportingMetricReader(ConsoleMetricExporter()),
         level=level,
         service_name=service_name,
+        environment=environment,
         extra_span_exporters=extra_span_exporters,
     )
 

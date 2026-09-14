@@ -19,6 +19,7 @@ class Settings:
     azure_model: str
     otel_endpoint: str
     service_name: str
+    environment: str
     log_level: str
     langfuse_host: str
     langfuse_public_key: str
@@ -32,6 +33,9 @@ def load_settings() -> Settings:
         azure_model=os.environ.get("AZURE_AI_MODEL", "Kimi-K2.6"),
         otel_endpoint=os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317"),
         service_name=os.environ.get("OTEL_SERVICE_NAME", "mardik"),
+        # Sépare dev/staging/prod dans Jaeger et Langfuse sans multiplier les
+        # services : même service.name, filtre par environnement en plus.
+        environment=os.environ.get("APP_ENV", "development"),
         log_level=os.environ.get("LOG_LEVEL", "INFO"),
         langfuse_host=os.environ.get("LANGFUSE_HOST", "http://localhost:3000"),
         langfuse_public_key=os.environ.get("LANGFUSE_PUBLIC_KEY", ""),

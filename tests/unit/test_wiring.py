@@ -18,6 +18,7 @@ def test_build_agent_wires_langfuse_when_configured(fake_llm):
         azure_model="Kimi-K2.6",
         otel_endpoint="http://localhost:4317",
         service_name="mardik",
+        environment="test",
         log_level="INFO",
         langfuse_host="http://localhost:3000",
         langfuse_public_key="pk-test",

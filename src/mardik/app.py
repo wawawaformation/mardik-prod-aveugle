@@ -26,6 +26,7 @@ def build_agent(
         telemetry = build_default_telemetry(
             level=settings.log_level,
             service_name=settings.service_name,
+            environment=settings.environment,
             langfuse_host=settings.langfuse_host,
             langfuse_public_key=settings.langfuse_public_key,
             langfuse_secret_key=settings.langfuse_secret_key,

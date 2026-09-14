@@ -174,6 +174,16 @@ conversation.
 > précisément la vue "coût/tokens" de Langfuse, vide jusqu'ici (section 4),
 > qui s'active maintenant avec un vrai appel.
 >
+> ✅ **Bonus (2026-09-14) — traces triables par environnement, appel externe
+> distingué.** `deployment.environment.name` (convention OTel) est posé une
+> fois comme attribut de Resource — hérité par tous les spans sans le
+> répéter — et piloté par `APP_ENV` dans `.env`. Jaeger et Langfuse
+> affichent maintenant un tag/filtre dev vs staging vs prod, au lieu d'un
+> tas indistinguable de traces. En parallèle, `llm.invoke` porte désormais
+> `SpanKind.CLIENT` (appel sortant vers Azure) plutôt que le INTERNAL par
+> défaut : l'arbre Jaeger distingue visuellement l'appel externe des spans
+> internes (`tool.call`, `agent.turn`).
+>
 > 🔧 **Reste à préparer par le binôme :** un scénario de démo concret avec
 > le vrai LLM (ex. rejouer une des sessions de `sessions/` avec le vrai
 > modèle au lieu du LLM factice), et montrer dans Langfuse la vue

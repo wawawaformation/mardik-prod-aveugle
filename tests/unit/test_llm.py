@@ -9,6 +9,7 @@ def _settings(**overrides: str) -> Settings:
         azure_model="test-model",
         otel_endpoint="http://localhost:4317",
         service_name="mardik",
+        environment="test",
         log_level="INFO",
         langfuse_host="http://localhost:3000",
         langfuse_public_key="",

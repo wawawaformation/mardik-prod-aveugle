@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from typing import Any, Callable, Protocol
 
 from opentelemetry import context as otel_context
+from opentelemetry.trace import SpanKind
 
 from .errors import LLMTimeoutError
 from .session import SessionStore
@@ -42,7 +43,11 @@ class Agent:
         self.telemetry = telemetry if telemetry is not None else NoOpTelemetry()
 
     def _invoke_llm_sync(self, session_id: str, messages: list[dict[str, Any]]) -> Reply:
-        with self.telemetry.tracer.start_as_current_span("llm.invoke") as span:
+        # CLIENT : cet appel sort du service vers l'endpoint Azure — Jaeger
+        # distingue ainsi l'appel externe des spans internes dans l'arbre.
+        with self.telemetry.tracer.start_as_current_span(
+            "llm.invoke", kind=SpanKind.CLIENT
+        ) as span:
             span.set_attribute("langfuse.observation.type", "generation")
             span.set_attribute("gen_ai.system", "openai")
             span.set_attribute("session.id", session_id)
