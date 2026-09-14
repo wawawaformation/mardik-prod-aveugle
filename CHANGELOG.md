@@ -3,6 +3,16 @@
 Format : le plus récent en premier. Chaque entrée référence le test qui
 spécifiait le comportement attendu.
 
+## 2026-09-14 12:15 CEST — La CI démarre maintenant un vrai Jaeger
+
+Suite à l'entrée précédente : `test_live_telemetry.py` restait exclu de la
+CI faute de backend réel disponible sur le runner. Ajout d'un service
+`jaeger` dans `ci.yml` (image `jaegertracing/all-in-one:1.57`, mêmes ports
+et healthcheck que `docker-compose.yml`) ; GitHub Actions attend que son
+healthcheck passe avant de lancer les tests. Le `--ignore` est retiré :
+`uv run pytest tests/unit tests/integration` tourne désormais en entier
+(20/20), y compris la vérification contre un vrai backend OTLP.
+
 ## 2026-09-14 12:12 CEST — La CI ne jouait que les tests unitaires
 
 `.github/workflows/ci.yml` lançait `uv run pytest tests/unit` uniquement,

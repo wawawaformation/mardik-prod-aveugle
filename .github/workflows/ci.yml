@@ -8,6 +8,19 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      jaeger:
+        image: jaegertracing/all-in-one:1.57
+        env:
+          COLLECTOR_OTLP_ENABLED: "true"
+        ports:
+          - 4317:4317
+          - 16686:16686
+        options: >-
+          --health-cmd "wget -qO- http://localhost:14269/ || exit 1"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - name: Install uv
@@ -17,4 +30,4 @@ jobs:
       - name: Install dependencies
         run: uv sync
       - name: Run tests
-        run: uv run pytest tests/unit tests/integration --ignore=tests/integration/test_live_telemetry.py
+        run: uv run pytest tests/unit tests/integration
