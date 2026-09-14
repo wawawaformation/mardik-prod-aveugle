@@ -4,6 +4,13 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass
 
+from dotenv import load_dotenv
+
+# Charge .env dans os.environ une seule fois, au premier import de ce module.
+# N'écrase jamais une variable déjà présente dans l'environnement réel (ex.
+# CI, conteneur) : .env ne fournit que des valeurs par défaut locales.
+load_dotenv()
+
 
 @dataclass(frozen=True)
 class Settings:

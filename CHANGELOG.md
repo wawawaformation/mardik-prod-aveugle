@@ -3,6 +3,21 @@
 Format : le plus récent en premier. Chaque entrée référence le test qui
 spécifiait le comportement attendu.
 
+## 2026-09-14 13:32 CEST — .env chargé automatiquement (python-dotenv)
+
+Repéré juste après l'ajout de Langfuse : `.env` n'était jamais chargé par
+rien dans le projet (ni `uv run`, ni le code) — il fallait le `source .env`
+à la main dans chaque shell, sans quoi `load_settings()` retombait sur les
+valeurs par défaut (vides pour les clés Langfuse), silencieusement.
+
+Corrigé : `config.py` appelle `load_dotenv()` (paquet `python-dotenv`) une
+fois à l'import du module. N'écrase jamais une variable déjà présente dans
+l'environnement réel (CI, conteneur) — `.env` ne fournit que des valeurs
+par défaut locales. Vérifié depuis un shell totalement vierge (`env -i`) :
+`tests/integration/test_live_langfuse.py` passe désormais sans sourcing
+manuel, et `test_load_settings_defaults_langfuse_to_disabled` (qui dépend
+de `monkeypatch.delenv`) continue de passer.
+
 ## 2026-09-14 13:28 CEST — Exploration : export des traces vers Langfuse self-hébergé
 
 Ajout d'un second backend d'observabilité, en plus de Jaeger, pour explorer
