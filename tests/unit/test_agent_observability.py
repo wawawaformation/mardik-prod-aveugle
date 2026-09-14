@@ -58,3 +58,20 @@ def test_spans_carry_langfuse_and_session_attributes(fake_llm, telemetry, span_e
     assert spans["tool.call"].attributes["langfuse.observation.type"] == "tool"
     assert spans["tool.call"].attributes["session.id"] == "obs"
     assert spans["tool.call"].attributes["tool.name"] == "lookup_order"
+
+
+def test_spans_carry_input_and_output(fake_llm, telemetry, span_exporter):
+    result = _run(fake_llm, telemetry)
+    spans = {span.name: span for span in span_exporter.get_finished_spans()}
+
+    assert (
+        spans["agent.turn"].attributes["langfuse.observation.input"]
+        == "Statut de ma commande #1042 ?"
+    )
+    assert spans["agent.turn"].attributes["langfuse.observation.output"] == result.reply
+
+    assert "#1042" in spans["llm.invoke"].attributes["langfuse.observation.input"]
+    assert spans["llm.invoke"].attributes["langfuse.observation.output"] == ""
+
+    assert spans["tool.call"].attributes["langfuse.observation.input"] == '{"order_id": "1042"}'
+    assert spans["tool.call"].attributes["langfuse.observation.output"] == result.reply

@@ -38,6 +38,12 @@ respectives.
   reste figé sur l'état "sans attribut" mais `src/mardik/agent.py` fait foi.
   Jaeger affiche ces clés comme attributs plats ; Langfuse s'en sert pour
   ses vues dédiées (coût, tokens, regroupement par session/type).
+- Les spans portent aussi désormais le **contenu réel** (`langfuse.observation.input`/`.output`) :
+  message utilisateur et réponse finale sur `agent.turn`, historique complet
+  et réponse brute sur `llm.invoke`, arguments et résultat sur `tool.call`.
+  Compromis assumé par rapport à la recommandation de confidentialité du
+  schéma de conception préliminaire (métadonnées plutôt que données brutes)
+  — voir CHANGELOG du 2026-09-14 15:20.
 
 ## Voir aussi
 

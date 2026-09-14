@@ -3,6 +3,29 @@
 Format : le plus récent en premier. Chaque entrée référence le test qui
 spécifiait le comportement attendu.
 
+## 2026-09-14 15:20 CEST — Contenu (prompt/réponse) visible dans Langfuse
+
+Suite à l'enrichissement des attributs (entrée précédente) : Langfuse
+affichait bien `session.id` et le type d'observation, mais signalait
+*"this trace didn't receive an input or output"* — les spans ne portaient
+que des métadonnées, jamais le texte réel de la conversation.
+
+Ajouté (`agent.py`), vérifié contre la doc Langfuse
+(`property-mapping` : `langfuse.observation.input`/`.output`, string ou
+JSON string) : `agent.turn` porte le message utilisateur en entrée et la
+réponse finale en sortie ; `llm.invoke` porte l'historique complet envoyé
+au LLM (JSON) et le contenu brut de la réponse ; `tool.call` porte les
+arguments de l'outil (JSON) et son résultat. Test ajouté :
+`test_agent_observability.py::test_spans_carry_input_and_output`. Vérifié
+en direct : la trace Langfuse affiche maintenant le vrai prompt et la
+vraie réponse.
+
+**Compromis assumé** : contrairement à la recommandation de confidentialité
+notée dans le schéma de conception préliminaire (privilégier les
+métadonnées aux données brutes), on envoie ici le contenu complet vers un
+service tiers self-hébergé — acceptable pour une démo avec des données de
+test, à reconsidérer avant tout usage avec de vraies données client.
+
 ## 2026-09-14 15:00 CEST — Spans enrichis d'attributs métier (session, modèle, tokens, outil)
 
 Suite à une question sur l'écart Jaeger/Langfuse (`docs/images/traces_jaeger_langfuse_parallele/`) :

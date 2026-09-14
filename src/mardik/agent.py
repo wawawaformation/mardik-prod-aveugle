@@ -1,6 +1,7 @@
 """The Mardik agent: turns a user message into a reply, calling tools as needed."""
 from __future__ import annotations
 
+import json
 import threading
 import time
 from dataclasses import dataclass
@@ -45,6 +46,9 @@ class Agent:
             span.set_attribute("langfuse.observation.type", "generation")
             span.set_attribute("gen_ai.system", "openai")
             span.set_attribute("session.id", session_id)
+            span.set_attribute(
+                "langfuse.observation.input", json.dumps(messages, ensure_ascii=False)
+            )
             try:
                 reply = self.llm.invoke(messages)
             except TimeoutError as exc:
@@ -64,6 +68,7 @@ class Agent:
             span.set_attribute("gen_ai.usage.input_tokens", usage["input_tokens"])
         if usage.get("output_tokens") is not None:
             span.set_attribute("gen_ai.usage.output_tokens", usage["output_tokens"])
+        span.set_attribute("langfuse.observation.output", reply.content)
 
     def _invoke_llm(self, session_id: str, messages: list[dict[str, Any]]) -> Reply:
         # The Azure SDK call is blocking, so run it on a worker thread.
@@ -94,8 +99,13 @@ class Agent:
             span.set_attribute("langfuse.observation.type", "tool")
             span.set_attribute("session.id", session_id)
             span.set_attribute("tool.name", call["name"])
+            span.set_attribute(
+                "langfuse.observation.input", json.dumps(call["args"], ensure_ascii=False)
+            )
             tool = self._tools[call["name"]]
-            return tool(**call["args"])
+            result = tool(**call["args"])
+            span.set_attribute("langfuse.observation.output", result)
+            return result
 
     def run_turn(
         self, store: SessionStore, session_id: str, user_message: str
@@ -103,6 +113,7 @@ class Agent:
         with self.telemetry.tracer.start_as_current_span("agent.turn") as span:
             span.set_attribute("langfuse.observation.type", "agent")
             span.set_attribute("session.id", session_id)
+            span.set_attribute("langfuse.observation.input", user_message)
             start = time.perf_counter()
             store.append(session_id, {"role": "user", "content": user_message})
             store.record_turn(session_id)
@@ -129,6 +140,7 @@ class Agent:
                 )
                 raise
 
+            span.set_attribute("langfuse.observation.output", text)
             elapsed_ms = (time.perf_counter() - start) * 1000.0
             self.telemetry.record_latency(elapsed_ms, session_id=session_id)
             self.telemetry.logger.info(
