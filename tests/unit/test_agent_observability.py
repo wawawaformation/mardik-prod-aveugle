@@ -43,3 +43,18 @@ def test_trace_context_propagated_across_threads(fake_llm, telemetry, span_expor
     assert "agent.turn" in spans
     assert "llm.invoke" in spans
     assert spans["llm.invoke"].context.trace_id == spans["agent.turn"].context.trace_id
+
+
+def test_spans_carry_langfuse_and_session_attributes(fake_llm, telemetry, span_exporter):
+    _run(fake_llm, telemetry)
+    spans = {span.name: span for span in span_exporter.get_finished_spans()}
+
+    assert spans["agent.turn"].attributes["langfuse.observation.type"] == "agent"
+    assert spans["agent.turn"].attributes["session.id"] == "obs"
+
+    assert spans["llm.invoke"].attributes["langfuse.observation.type"] == "generation"
+    assert spans["llm.invoke"].attributes["session.id"] == "obs"
+
+    assert spans["tool.call"].attributes["langfuse.observation.type"] == "tool"
+    assert spans["tool.call"].attributes["session.id"] == "obs"
+    assert spans["tool.call"].attributes["tool.name"] == "lookup_order"

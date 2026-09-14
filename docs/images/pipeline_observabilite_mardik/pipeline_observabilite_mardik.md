@@ -32,6 +32,12 @@ respectives.
   plus `unknown_service`) — voir CHANGELOG du 2026-09-14 12:06.
 - Une seconde destination pour les traces (Langfuse) s'ajoute en option :
   voir [`traces_jaeger_langfuse_parallele.md`](../traces_jaeger_langfuse_parallele/traces_jaeger_langfuse_parallele.md).
+- Les 3 spans portent maintenant des attributs métier (`session.id` partout,
+  `langfuse.observation.type` = `agent`/`generation`/`tool`, modèle et
+  tokens sur `llm.invoke`, `tool.name` sur `tool.call`) — le schéma/PNG
+  reste figé sur l'état "sans attribut" mais `src/mardik/agent.py` fait foi.
+  Jaeger affiche ces clés comme attributs plats ; Langfuse s'en sert pour
+  ses vues dédiées (coût, tokens, regroupement par session/type).
 
 ## Voir aussi
 

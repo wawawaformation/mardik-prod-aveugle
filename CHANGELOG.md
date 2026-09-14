@@ -3,6 +3,32 @@
 Format : le plus récent en premier. Chaque entrée référence le test qui
 spécifiait le comportement attendu.
 
+## 2026-09-14 15:00 CEST — Spans enrichis d'attributs métier (session, modèle, tokens, outil)
+
+Suite à une question sur l'écart Jaeger/Langfuse (`docs/images/traces_jaeger_langfuse_parallele/`) :
+les 3 spans (`agent.turn`, `llm.invoke`, `tool.call`) ne portaient aucun
+attribut personnalisé, notées "non fait" dans
+`docs/images/pipeline_observabilite_mardik/pipeline_observabilite_mardik.md`.
+Les deux backends affichaient donc le même waterfall générique — aucune des
+vues spécifiques LLM de Langfuse (coût, tokens, regroupement par session)
+ne pouvait s'activer.
+
+Corrigé (`agent.py`) : chaque span porte désormais `session.id` et
+`langfuse.observation.type` (`agent`/`generation`/`tool` — clé documentée
+par Langfuse pour router un span vers ses vues dédiées, plutôt qu'un
+attribut ad-hoc). `llm.invoke` ajoute en plus `gen_ai.system`,
+`gen_ai.request.model` et `gen_ai.usage.{input,output}_tokens` (lus depuis
+`response_metadata`/`usage_metadata` du `AIMessage` réel de `ChatOpenAI` —
+absents du `Reply` factice utilisé par les tests, d'où un accès défensif).
+`tool.call` ajoute `tool.name`. Noms d'attributs vérifiés contre la doc
+Langfuse OTel (`integrations/native/opentelemetry.md`), pas de mémoire.
+`session_id` est désormais transmis à `_invoke_llm`/`_invoke_llm_sync`/
+`_dispatch_tool` pour pouvoir le poser sur chaque span, pas seulement le
+span racine. Test ajouté :
+`tests/unit/test_agent_observability.py::test_spans_carry_langfuse_and_session_attributes`.
+Jaeger affichera ces clés comme attributs plats (pas de changement de vue) ;
+Langfuse les interprète pour ses vues dédiées.
+
 ## 2026-09-14 14:48 CEST — 12ᵉ incident : le LLM de prod n'a jamais fonctionné
 
 Repéré en testant le LLM réel pour la démo (jamais exercé jusqu'ici — tous
