@@ -20,7 +20,11 @@ def build_agent(
         from .llm import get_llm
 
         llm = get_llm(settings)
-    return Agent(llm=llm, tools=DEFAULT_TOOLS)
+    if telemetry is None:
+        from .telemetry import build_default_telemetry
+
+        telemetry = build_default_telemetry(level=settings.log_level)
+    return Agent(llm=llm, tools=DEFAULT_TOOLS, telemetry=telemetry)
 
 
 def main() -> None:

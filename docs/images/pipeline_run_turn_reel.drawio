@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="pipeline-run-turn-reel" name="Pipeline run_turn (réel)">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1650" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="titre" value="&lt;b&gt;Pipeline d'un tour de conversation — Agent.run_turn() (comportement réel)&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=17;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1000" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sstitre" value="Objectif de lecture : suivre le déroulement effectif d'un tour, repérer les points où l'instrumentation annoncée (README) ne correspond pas au code, et savoir dans quel fichier chaque étape vit." style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="40" y="48" width="1200" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Colonne gauche : flux principal -->
+        <mxCell id="start" value="Message utilisateur reçu" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="100" width="260" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="span-turn" value="Ouverture span &lt;b&gt;agent.turn&lt;/b&gt; (tracer)&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#999999&quot;&gt;&lt;i&gt;agent.py&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="180" width="260" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="store-append" value="store.append(message utilisateur)&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#999999&quot;&gt;&lt;i&gt;session.py&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="265" width="260" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="record-turn" value="store.record_turn()&lt;br&gt;lecture compteur → sleep → écriture&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#999999&quot;&gt;&lt;i&gt;session.py&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="345" width="260" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="thread-start" value="_invoke_llm : démarrage d'un thread worker, puis thread.join()&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#999999&quot;&gt;&lt;i&gt;agent.py&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="435" width="260" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="span-llm" value="[dans le thread]&lt;br&gt;Ouverture span &lt;b&gt;llm.invoke&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#999999&quot;&gt;&lt;i&gt;agent.py&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="525" width="260" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="llm-call" value="llm.invoke(historique complet) → Reply&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#999999&quot;&gt;&lt;i&gt;agent.py (client : llm.py)&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="615" width="260" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="dec-timeout" value="TimeoutError&lt;br&gt;levée ?&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#999999&quot;&gt;&lt;i&gt;agent.py&lt;/i&gt;&lt;/font&gt;" style="shape=rhombus;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="90" y="700" width="240" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="timeout-none" value="retourne None&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#999999&quot;&gt;&lt;i&gt;agent.py&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="420" y="720" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="crash" value="reply.content&lt;br&gt;→ AttributeError&lt;br&gt;(crash, pas d'erreur métier)&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#999999&quot;&gt;&lt;i&gt;agent.py&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="420" y="795" width="200" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="dec-tools" value="reply.tool_calls&lt;br&gt;non vide ?&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#999999&quot;&gt;&lt;i&gt;agent.py&lt;/i&gt;&lt;/font&gt;" style="shape=rhombus;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="90" y="850" width="240" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="dispatch" value="boucle : _dispatch_tool(call)&lt;br&gt;seul le dernier résultat est conservé&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#999999&quot;&gt;&lt;i&gt;agent.py (outils : tools.py)&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="420" y="865" width="220" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="store-append2" value="store.append(réponse assistant)&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#999999&quot;&gt;&lt;i&gt;session.py&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="1005" width="260" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="print" value="print(durée du tour)&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#999999&quot;&gt;&lt;i&gt;agent.py&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="1085" width="260" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="end" value="Retour TurnResult&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#999999&quot;&gt;&lt;i&gt;agent.py&lt;/i&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="1165" width="260" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Flèches flux principal -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="start" target="span-turn"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="span-turn" target="store-append"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="store-append" target="record-turn"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="record-turn" target="thread-start"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="thread-start" target="span-llm"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="span-llm" target="llm-call"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="llm-call" target="dec-timeout"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="e8" value="oui" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#B85450;exitX=1;exitY=0.5;entryX=0;entryY=0.5;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dec-timeout" target="timeout-none"><mxGeometry x="-0.2" relative="1" as="geometry"><mxPoint as="offset" y="-8" /></mxGeometry></mxCell>
+        <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#B85450;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="timeout-none" target="crash"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="e10" value="non" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="dec-timeout" target="dec-tools"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="e11" value="oui" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="dec-tools" target="dispatch"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.25;exitY=1;entryX=0.75;entryY=0;" edge="1" parent="1" source="dispatch" target="store-append2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e13" value="non" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="dec-tools" target="store-append2"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="store-append2" target="print"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e15" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="print" target="end"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <!-- Notes incidents (colonne droite) -->
+        <mxCell id="note5" value="&lt;b&gt;⚠ Incident — race condition&lt;/b&gt;&lt;br&gt;record_turn : lecture puis écriture séparées par un sleep, sans verrou. Sous appels concurrents sur la même session, des incréments sont perdus." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;spacingRight=8;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="345" width="330" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="n5link" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=none;strokeColor=#B85450;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="record-turn" target="note5"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="note1" value="&lt;b&gt;⚠ Incident — pas de propagation de contexte&lt;/b&gt;&lt;br&gt;Le span llm.invoke est ouvert dans un thread séparé sans copier le contexte OTel : il démarre son propre trace_id, déconnecté de agent.turn." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;spacingRight=8;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="525" width="330" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n1link" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=none;strokeColor=#B85450;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="span-llm" target="note1"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="note2" value="&lt;b&gt;⚠ Incident — erreur avalée&lt;/b&gt;&lt;br&gt;LLMTimeoutError existe (errors.py) mais n'est jamais levée : le TimeoutError est transformé en None, qui provoque un crash plus loin au lieu d'une erreur métier propre." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;spacingRight=8;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="700" width="330" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="n2link" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=none;strokeColor=#B85450;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="dec-timeout" target="note2"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="note3" value="&lt;b&gt;⚠ Incident — aucune trace pour l'outil&lt;/b&gt;&lt;br&gt;_dispatch_tool n'ouvre aucun span : les appels d'outils sont invisibles dans Jaeger." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;spacingRight=8;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="865" width="330" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n3link" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=none;strokeColor=#B85450;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="dispatch" target="note3"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="note4" value="&lt;b&gt;⚠ Incidents — sortie non instrumentée&lt;/b&gt;&lt;br&gt;print() au lieu d'un log structuré (turn.completed) ; aucune métrique latency_ms n'est jamais enregistrée." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;spacingRight=8;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="1085" width="330" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n4link" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=none;strokeColor=#B85450;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="print" target="note4"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="legende" value="&lt;b&gt;Légende&lt;/b&gt;   bleu = span de trace   ·   orange = appel externe / effet métier   ·   gris = étape locale   ·   rouge pointillé = incident observé (voir tests en échec)   ·   &lt;i&gt;italique gris&lt;/i&gt; = fichier source (src/mardik/…)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;align=left;verticalAlign=middle;fontSize=11;spacingLeft=12;spacingRight=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="1245" width="950" height="35" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

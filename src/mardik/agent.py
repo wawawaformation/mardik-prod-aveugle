@@ -6,6 +6,9 @@ import time
 from dataclasses import dataclass
 from typing import Any, Callable, Protocol
 
+from opentelemetry import context as otel_context
+
+from .errors import LLMTimeoutError
 from .session import SessionStore
 from .telemetry import NoOpTelemetry
 
@@ -41,24 +44,37 @@ class Agent:
         with self.telemetry.tracer.start_as_current_span("llm.invoke"):
             try:
                 return self.llm.invoke(messages)
-            except TimeoutError:
-                return None  # type: ignore[return-value]
+            except TimeoutError as exc:
+                raise LLMTimeoutError("upstream deadline exceeded") from exc
 
     def _invoke_llm(self, messages: list[dict[str, Any]]) -> Reply:
         # The Azure SDK call is blocking, so run it on a worker thread.
+        # Le contexte OTel est propagé manuellement : un thread démarre par
+        # défaut sans le contexte courant, ce qui casserait le lien entre
+        # le span llm.invoke et le span agent.turn qui l'englobe.
         box: dict[str, Any] = {}
+        parent_ctx = otel_context.get_current()
 
         def worker() -> None:
-            box["reply"] = self._invoke_llm_sync(messages)
+            token = otel_context.attach(parent_ctx)
+            try:
+                box["reply"] = self._invoke_llm_sync(messages)
+            except Exception as exc:  # noqa: BLE001 - relevée dans le thread appelant
+                box["error"] = exc
+            finally:
+                otel_context.detach(token)
 
         thread = threading.Thread(target=worker)
         thread.start()
         thread.join()
+        if "error" in box:
+            raise box["error"]
         return box["reply"]
 
     def _dispatch_tool(self, call: dict[str, Any]) -> str:
-        tool = self._tools[call["name"]]
-        return tool(**call["args"])
+        with self.telemetry.tracer.start_as_current_span("tool.call"):
+            tool = self._tools[call["name"]]
+            return tool(**call["args"])
 
     def run_turn(
         self, store: SessionStore, session_id: str, user_message: str
@@ -76,5 +92,8 @@ class Agent:
 
             store.append(session_id, {"role": "assistant", "content": text})
             elapsed_ms = (time.perf_counter() - start) * 1000.0
-            print(f"turn completed for {session_id} in {elapsed_ms:.1f}ms")
+            self.telemetry.record_latency(elapsed_ms, session_id=session_id)
+            self.telemetry.logger.info(
+                "turn.completed", session_id=session_id, elapsed_ms=elapsed_ms
+            )
             return TurnResult(session_id=session_id, reply=text)

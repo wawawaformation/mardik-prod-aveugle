@@ -24,5 +24,10 @@ def replay(session_data: dict[str, Any], agent: Agent, store: SessionStore) -> T
     """Replay a recorded session and return the result of its final turn."""
     session_id = session_data["session_id"]
     messages = session_data["messages"]
+    # Précharge l'historique des tours précédents : run_turn ajoute lui-même
+    # le dernier message utilisateur et rejoue l'appel LLM avec tout le
+    # contexte accumulé.
+    for message in messages[:-1]:
+        store.append(session_id, message)
     last = messages[-1]
     return agent.run_turn(store, session_id, last["content"])
