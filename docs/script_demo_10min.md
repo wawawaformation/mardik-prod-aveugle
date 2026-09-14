@@ -16,10 +16,10 @@
 | 1 | Ouverture & contexte | 0:30 | 0:30 |
 | 2 | Incidents trouvés et corrigés | 2:30 | 3:00 |
 | 3 | Tests d'intégration — démo live | 1:30 | 4:30 |
-| 4 | Observabilité — Jaeger + Langfuse côte à côte | 2:30 | 7:00 |
-| 5 | **[Camarade]** Le vrai LLM en action | 1:30 | 8:30 |
-| 6 | Bilan & conclusion | 1:00 | 9:30 |
-| — | Marge / questions | 0:30 | 10:00 |
+| 4 | Observabilité — Jaeger + Langfuse côte à côte | 2:45 | 7:15 |
+| 5 | **[Camarade]** Le vrai LLM en action | 1:30 | 8:45 |
+| 6 | Bilan & conclusion | 1:00 | 9:45 |
+| — | Marge / questions | 0:15 | 10:00 |
 
 **Prérequis avant de commencer :** `make up` déjà lancé (Jaeger sur `:16686`,
 Langfuse sur `:3000`), deux onglets navigateur ouverts et connectés
@@ -98,7 +98,7 @@ uv run pytest tests/unit tests/integration --ignore=tests/integration/test_live_
 
 ---
 
-## 4. Observabilité — Jaeger + Langfuse côte à côte — 2:30 (7:00)
+## 4. Observabilité — Jaeger + Langfuse côte à côte — 2:45 (7:15)
 
 🎤 **À dire :**
 > « Pour la partie diagnostic en production, on a câblé deux backends en
@@ -109,8 +109,30 @@ uv run pytest tests/unit tests/integration --ignore=tests/integration/test_live_
 
 💻 **À l'écran — schéma (avant le live, pas en filet de secours) :**
 ouvrir `docs/images/traces_jaeger_langfuse_parallele/traces_jaeger_langfuse_parallele.png`
-— montrer le fan-out (un span, deux exportateurs) 10-15 secondes, puis
-enchaîner sur le terminal.
+— montrer le fan-out (un span, deux exportateurs) 10-15 secondes.
+
+💻 **À l'écran — schéma (garanti, 15 sec) :** ouvrir
+`docs/images/pipeline_observabilite_mardik/pipeline_observabilite_mardik.png`
+— la hiérarchie des 3 spans jusqu'à leurs métriques et logs, pour situer
+ce qu'on va voir dans le code puis dans les deux UI.
+
+💻 **À l'écran — code source (garanti, 15 sec) :** ouvrir `src/mardik/agent.py`
+autour de la ligne 97 (`_dispatch_tool`) — montrer concrètement comment un
+span se crée :
+
+```python
+def _dispatch_tool(self, session_id: str, call: dict[str, Any]) -> str:
+    with self.telemetry.tracer.start_as_current_span("tool.call") as span:
+        span.set_attribute("langfuse.observation.type", "tool")
+        span.set_attribute("session.id", session_id)
+        span.set_attribute("tool.name", call["name"])
+```
+
+🎤 :
+> « Concrètement, dans le code, un span c'est juste ce bloc `with` : on
+> l'ouvre, on pose quelques attributs, et OpenTelemetry se charge du
+> reste — mesurer la durée, propager le contexte, l'exporter vers les
+> deux backends en même temps. »
 
 💻 **À l'écran — terminal (génère une vraie trace sur les deux backends) :**
 
@@ -215,11 +237,10 @@ de synthèse, laisser la parole aux questions.
   (détail cause/correctif de chaque incident), `docs/comprendre_le_code.md`
   (vue d'ensemble du code), `docs/images/*/*.md` (fiches de lecture des
   schémas).
-- **Les 5 schémas du projet** (tous dans `docs/images/<nom>/<nom>.png`) —
-  4 sont déjà placés dans ce script (`pipeline_run_turn_reel`,
+- **Les 5 schémas du projet** (tous dans `docs/images/<nom>/<nom>.png`) sont
+  désormais tous placés dans ce script (`pipeline_run_turn_reel`,
   `tests_integration_composants`, `traces_jaeger_langfuse_parallele`,
-  `langfuse_composants_dependances`). Le 5ᵉ,
-  `pipeline_observabilite_mardik`, n'a pas de créneau dédié (il recoupe la
-  section 4) — à garder ouvert dans un onglet en secours si une question
-  porte spécifiquement sur ce qui est centralisé ou non (traces vs
-  métriques/logs).
+  `pipeline_observabilite_mardik`, `langfuse_composants_dependances`).
+- **Éditeur de code prêt** : pour la section 4, avoir `src/mardik/agent.py`
+  déjà ouvert avec la ligne 97 visible (pas de temps perdu à chercher/scroller
+  en direct).
