@@ -3,6 +3,18 @@
 Format : le plus récent en premier. Chaque entrée référence le test qui
 spécifiait le comportement attendu.
 
+## 2026-09-14 12:12 CEST — La CI ne jouait que les tests unitaires
+
+`.github/workflows/ci.yml` lançait `uv run pytest tests/unit` uniquement,
+depuis le commit initial. Or 9 des 10 tests de `tests/integration/` sont
+hermétiques (fixtures en mémoire, aucune dépendance à Docker) — la CI ne
+détectait donc aucune régression sur les incidents vérifiés uniquement par
+rejeu de session (perte de contexte, propagation de trace, concurrence...).
+
+Corrigé : la CI lance désormais `tests/unit` et `tests/integration`, en
+excluant explicitement `tests/integration/test_live_telemetry.py` (seul
+test du dossier qui nécessite un vrai Jaeger démarré, absent en CI).
+
 ## 2026-09-14 12:06 CEST — 11ᵉ incident : service.name jamais câblé, traces invisibles sous le bon nom dans Jaeger
 
 Trouvé en ajoutant un test contre le vrai Jaeger (`tests/integration/test_live_telemetry.py`,
