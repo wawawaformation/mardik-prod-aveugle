@@ -18,7 +18,12 @@ from mardik.session import SessionStore
 
 class _StaticLLM:
     def invoke(self, messages: list[dict]) -> Reply:
-        return Reply(content="Bonjour, comment puis-je vous aider ?", tool_calls=[])
+        # tool_calls non vide pour que le tour émette les 3 spans imbriqués
+        # (agent.turn → llm.invoke → tool.call), cf. docs/script_demo_10min.md.
+        return Reply(
+            content="Un instant, je vérifie votre commande.",
+            tool_calls=[{"name": "lookup_order", "args": {"order_id": "1042"}}],
+        )
 
 
 def _fetch_langfuse_traces(
