@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="tests-integration-composants" name="Tests d'intégration — composants en jeu">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1380" pageHeight="620" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="titre" value="&lt;b&gt;Tests d'intégration (tests/integration/) — composants en jeu&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=17;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="30" y="15" width="900" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sstitre" value="Objectif de lecture : pour chaque groupe de tests, quels fixtures/composants sont assemblés et ce que chaque test vérifie précisément." style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="30" y="42" width="1200" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Colonne A : chemin de succès -->
+        <mxCell id="a-head" value="&lt;b&gt;Chemin de succès&lt;/b&gt;&lt;br&gt;fixture &lt;b&gt;fake_llm&lt;/b&gt; (ContextAwareFakeLLM)&lt;br&gt;session &lt;b&gt;replay_delivery.json&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="30" y="80" width="310" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a-replay" value="Agent + SessionStore → &lt;b&gt;replay()&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="30" y="165" width="310" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="a-tests" value="&lt;b&gt;test_replay_preserves_session_context&lt;/b&gt;&lt;br&gt;→ reply contient « expédiée »&lt;br&gt;&lt;br&gt;&lt;b&gt;test_replay_smoke&lt;/b&gt;&lt;br&gt;→ reply non nul&lt;br&gt;&lt;br&gt;&lt;b&gt;test_replay_produces_single_connected_trace&lt;/b&gt;&lt;br&gt;+ &lt;i&gt;span_exporter&lt;/i&gt; → même trace_id (agent.turn/llm.invoke/tool.call)&lt;br&gt;&lt;br&gt;&lt;b&gt;test_replay_emits_latency_metric&lt;/b&gt;&lt;br&gt;+ &lt;i&gt;metric_reader&lt;/i&gt; → latency_ms&lt;br&gt;&lt;br&gt;&lt;b&gt;test_replay_logs_turn_completion&lt;/b&gt;&lt;br&gt;+ &lt;i&gt;capture_logs&lt;/i&gt; → turn.completed" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;align=left;verticalAlign=top;fontSize=10;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="30" y="215" width="310" height="330" as="geometry" />
+        </mxCell>
+
+        <!-- Colonne B : chemin d'échec -->
+        <mxCell id="b-head" value="&lt;b&gt;Chemin d'échec&lt;/b&gt;&lt;br&gt;fixture &lt;b&gt;timeout_llm&lt;/b&gt; (TimeoutFakeLLM)&lt;br&gt;session &lt;b&gt;incident_timeout.json&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="360" y="80" width="310" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b-replay" value="Agent + SessionStore → &lt;b&gt;replay()&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="360" y="165" width="310" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="b-tests" value="&lt;b&gt;test_replay_timeout_incident&lt;/b&gt;&lt;br&gt;→ lève LLMTimeoutError&lt;br&gt;&lt;br&gt;&lt;b&gt;test_replay_timeout_increments_error_counter&lt;/b&gt;&lt;br&gt;+ &lt;i&gt;metric_reader&lt;/i&gt; → errors_total&lt;br&gt;&lt;br&gt;&lt;b&gt;test_replay_timeout_logs_failure&lt;/b&gt;&lt;br&gt;+ &lt;i&gt;capture_logs&lt;/i&gt; → turn.failed" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;align=left;verticalAlign=top;fontSize=10;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="360" y="215" width="310" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- Colonne C : concurrence -->
+        <mxCell id="c-head" value="&lt;b&gt;Concurrence&lt;/b&gt;&lt;br&gt;fixture &lt;b&gt;fake_llm&lt;/b&gt;&lt;br&gt;session &lt;b&gt;incident_duplicate_delivery.json&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="690" y="80" width="310" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="c-replay" value="1 Agent + 1 SessionStore &lt;b&gt;partagé&lt;/b&gt;&lt;br&gt;2 threads → &lt;b&gt;replay()&lt;/b&gt; concurrent" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="690" y="165" width="310" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="c-tests" value="&lt;b&gt;test_concurrent_replay_counts_every_turn&lt;/b&gt;&lt;br&gt;→ store.turns(session_id) == 2&lt;br&gt;(aucun incrément perdu, threading.Lock)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;align=left;verticalAlign=top;fontSize=10;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="690" y="230" width="310" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Colonne D : backend réel -->
+        <mxCell id="d-head" value="&lt;b&gt;Backend réel&lt;/b&gt;&lt;br&gt;pas de fixture fake : &lt;b&gt;build_agent()&lt;/b&gt;&lt;br&gt;télémétrie par défaut (OTLP réel)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="80" width="310" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="d-replay" value="Agent → &lt;b&gt;run_turn()&lt;/b&gt; (pas de replay :&lt;br&gt;pas de fixture de session)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="165" width="310" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="d-tests" value="&lt;b&gt;test_default_telemetry_reaches_jaeger&lt;/b&gt;&lt;br&gt;→ requête HTTP vers &lt;b&gt;Jaeger&lt;/b&gt; réel (:16686/api/traces)&lt;br&gt;→ trace trouvée sous le service « mardik »&lt;br&gt;&lt;i&gt;suppose Jaeger démarré (make up)&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;align=left;verticalAlign=top;fontSize=10;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="230" width="310" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Flèches verticales dans chaque colonne -->
+        <mxCell id="ea1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="a-head" target="a-replay"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ea2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="a-replay" target="a-tests"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="eb1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="b-head" target="b-replay"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="eb2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="b-replay" target="b-tests"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="ec1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="c-head" target="c-replay"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ec2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="c-replay" target="c-tests"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="ed1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="d-head" target="d-replay"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ed2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="d-replay" target="d-tests"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="legende" value="&lt;b&gt;Légende&lt;/b&gt;   bleu = fixtures d'entrée   ·   gris = assemblage agent/store   ·   orange = signal d'observabilité vérifié   ·   violet = concurrence   ·   rouge = incident / backend externe" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CCCCCC;align=left;verticalAlign=middle;fontSize=11;spacingLeft=12;spacingRight=12;" vertex="1" parent="1">
+          <mxGeometry x="30" y="560" width="1300" height="30" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

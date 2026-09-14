@@ -78,3 +78,12 @@ dans `livrables/article_reel/`).
 
 [`images/pipeline_observabilite_mardik.drawio`](images/pipeline_observabilite_mardik.drawio)
 (export : [`images/pipeline_observabilite_mardik.png`](images/pipeline_observabilite_mardik.png)).
+
+## Schéma des tests d'intégration — composants en jeu
+
+Pour chaque groupe de tests (`tests/integration/`) : quelles fixtures sont
+assemblées (LLM factice, session JSON, store, télémétrie) et ce que chaque
+test vérifie précisément.
+
+[`images/tests_integration_composants.drawio`](images/tests_integration_composants.drawio)
+(export : [`images/tests_integration_composants.png`](images/tests_integration_composants.png)).
