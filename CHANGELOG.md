@@ -3,6 +3,21 @@
 Format : le plus récent en premier. Chaque entrée référence le test qui
 spécifiait le comportement attendu.
 
+## 2026-09-14 12:06 CEST — 11ᵉ incident : service.name jamais câblé, traces invisibles sous le bon nom dans Jaeger
+
+Trouvé en ajoutant un test contre le vrai Jaeger (`tests/integration/test_live_telemetry.py`,
+suppose `make up` fait) : la trace atteignait bien Jaeger, mais sous le
+service `unknown_service`, pas `mardik`. Cause racine (`telemetry.py`) :
+`Settings.service_name` (lu depuis `OTEL_SERVICE_NAME`, `config.py`) n'était
+jamais transmis à `TracerProvider`/`MeterProvider` — ils étaient construits
+sans `resource=`, donc le SDK retombait sur son nom de service par défaut.
+En pratique, dans Jaeger, Mardik était donc introuvable en cherchant "mardik".
+
+Corrigé : `build_telemetry`/`build_default_telemetry` construisent une
+`opentelemetry.sdk.resources.Resource` avec `service.name` et la passent aux
+deux providers ; `build_agent` (`app.py`) transmet `settings.service_name`.
+Test ajouté : `tests/unit/test_telemetry.py::test_service_name_is_set_on_spans`.
+
 ## 2026-09-14 11:49 CEST — Le chemin d'échec est désormais vérifié par rejeu de session
 
 Ajout de `test_replay_timeout_increments_error_counter` et

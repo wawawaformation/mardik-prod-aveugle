@@ -23,7 +23,9 @@ def build_agent(
     if telemetry is None:
         from .telemetry import build_default_telemetry
 
-        telemetry = build_default_telemetry(level=settings.log_level)
+        telemetry = build_default_telemetry(
+            level=settings.log_level, service_name=settings.service_name
+        )
     return Agent(llm=llm, tools=DEFAULT_TOOLS, telemetry=telemetry)
 
 

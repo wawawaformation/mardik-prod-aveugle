@@ -17,6 +17,7 @@ from opentelemetry.sdk.metrics.export import (
     MetricReader,
     PeriodicExportingMetricReader,
 )
+from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import (
     ConsoleSpanExporter,
@@ -66,20 +67,22 @@ def build_telemetry(
     span_exporter: SpanExporter | None = None,
     metric_reader: MetricReader | None = None,
     level: str = "INFO",
+    service_name: str = "mardik",
 ) -> Telemetry:
     """Build a self-contained Telemetry bundle.
 
     Defaults to console exporters; tests pass in-memory exporters/readers.
     """
     configure_logging(level)
+    resource = Resource.create({"service.name": service_name})
 
-    tracer_provider = TracerProvider()
+    tracer_provider = TracerProvider(resource=resource)
     tracer_provider.add_span_processor(
         SimpleSpanProcessor(span_exporter or ConsoleSpanExporter())
     )
 
     reader = metric_reader or PeriodicExportingMetricReader(ConsoleMetricExporter())
-    meter_provider = MeterProvider(metric_readers=[reader])
+    meter_provider = MeterProvider(resource=resource, metric_readers=[reader])
 
     return Telemetry(
         tracer=tracer_provider.get_tracer("mardik"),
@@ -87,7 +90,7 @@ def build_telemetry(
     )
 
 
-def build_default_telemetry(level: str = "INFO") -> Telemetry:
+def build_default_telemetry(level: str = "INFO", service_name: str = "mardik") -> Telemetry:
     """Production wiring: OTLP/gRPC span export to the collector + periodic metrics."""
     from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 
@@ -95,6 +98,7 @@ def build_default_telemetry(level: str = "INFO") -> Telemetry:
         span_exporter=OTLPSpanExporter(),
         metric_reader=PeriodicExportingMetricReader(ConsoleMetricExporter()),
         level=level,
+        service_name=service_name,
     )
 
 
