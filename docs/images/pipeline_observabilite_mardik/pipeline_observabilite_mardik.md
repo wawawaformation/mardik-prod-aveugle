@@ -31,7 +31,7 @@ respectives.
 - Le `service.name` des spans est maintenant correctement câblé (`mardik`,
   plus `unknown_service`) — voir CHANGELOG du 2026-09-14 12:06.
 - Une seconde destination pour les traces (Langfuse) s'ajoute en option :
-  voir [`traces_jaeger_langfuse_parallele.md`](traces_jaeger_langfuse_parallele.md).
+  voir [`traces_jaeger_langfuse_parallele.md`](../traces_jaeger_langfuse_parallele/traces_jaeger_langfuse_parallele.md).
 
 ## Voir aussi
 

@@ -29,5 +29,5 @@ distincts, un par exportateur : Jaeger (gauche) et Langfuse (droite).
 ## Voir aussi
 
 - `docs/superpowers/specs/2026-09-14-langfuse-self-hosted-design.md`
-- [`langfuse_composants_dependances.md`](langfuse_composants_dependances.md)
+- [`langfuse_composants_dependances.md`](../langfuse_composants_dependances/langfuse_composants_dependances.md)
 - `src/mardik/telemetry.py`

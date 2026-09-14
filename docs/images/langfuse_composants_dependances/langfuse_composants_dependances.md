@@ -36,6 +36,6 @@ et `minio` (événements bruts).
 ## Voir aussi
 
 - `docs/superpowers/specs/2026-09-14-langfuse-self-hosted-design.md`
-- [`traces_jaeger_langfuse_parallele.md`](traces_jaeger_langfuse_parallele.md)
+- [`traces_jaeger_langfuse_parallele.md`](../traces_jaeger_langfuse_parallele/traces_jaeger_langfuse_parallele.md)
 - Compose de référence Langfuse : `docker-compose.yml` (à venir dans le plan
   d'implémentation)

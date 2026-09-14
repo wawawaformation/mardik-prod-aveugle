@@ -63,9 +63,8 @@ comportement attendu** de chaque brique (span attendu, log attendu, métrique
 attendue, comportement en cas de timeout, comportement sous charge
 concurrente). En les faisant tourner (`pytest -v`), 9 tests sur 10 échouent —
 ce qui donne un contraste net entre « ce que le code est censé faire » et
-« ce qu'il fait vraiment ». Voir le schéma associé :
-[`images/pipeline_run_turn_reel.drawio`](images/pipeline_run_turn_reel.drawio)
-(export : [`images/pipeline_run_turn_reel.png`](images/pipeline_run_turn_reel.png)).
+« ce qu'il fait vraiment ». Voir le schéma associé et sa fiche de lecture :
+[`images/pipeline_run_turn_reel/`](images/pipeline_run_turn_reel/pipeline_run_turn_reel.md).
 
 ## Schéma d'observabilité — spans, métriques, logs
 
@@ -76,8 +75,7 @@ logs restent en sortie standard du processus, sans Prometheus/Loki/Grafana
 câblés (contrairement au pipeline RAG de l'article transposé par Sofiane
 dans `livrables/article_reel/`).
 
-[`images/pipeline_observabilite_mardik.drawio`](images/pipeline_observabilite_mardik.drawio)
-(export : [`images/pipeline_observabilite_mardik.png`](images/pipeline_observabilite_mardik.png)).
+[`images/pipeline_observabilite_mardik/`](images/pipeline_observabilite_mardik/pipeline_observabilite_mardik.md).
 
 ## Schéma des tests d'intégration — composants en jeu
 
@@ -85,19 +83,16 @@ Pour chaque groupe de tests (`tests/integration/`) : quelles fixtures sont
 assemblées (LLM factice, session JSON, store, télémétrie) et ce que chaque
 test vérifie précisément.
 
-[`images/tests_integration_composants.drawio`](images/tests_integration_composants.drawio)
-(export : [`images/tests_integration_composants.png`](images/tests_integration_composants.png)).
+[`images/tests_integration_composants/`](images/tests_integration_composants/tests_integration_composants.md).
 
 ## Langfuse — exploration en complément de Jaeger
 
 Deux schémas produits pour l'exploration Langfuse (voir
 `docs/superpowers/specs/2026-09-14-langfuse-self-hosted-design.md`) :
 
-- [`images/traces_jaeger_langfuse_parallele.drawio`](images/traces_jaeger_langfuse_parallele.drawio)
-  (export : [`.png`](images/traces_jaeger_langfuse_parallele.png)) — comment
-  le même span part vers Jaeger (gRPC, généraliste) et Langfuse (HTTP,
-  spécifique LLM) en parallèle, indépendamment.
-- [`images/langfuse_composants_dependances.drawio`](images/langfuse_composants_dependances.drawio)
-  (export : [`.png`](images/langfuse_composants_dependances.png)) — le
-  déploiement interne de Langfuse self-hébergé (web, worker, postgres,
+- [`images/traces_jaeger_langfuse_parallele/`](images/traces_jaeger_langfuse_parallele/traces_jaeger_langfuse_parallele.md)
+  — comment le même span part vers Jaeger (gRPC, généraliste) et Langfuse
+  (HTTP, spécifique LLM) en parallèle, indépendamment.
+- [`images/langfuse_composants_dependances/`](images/langfuse_composants_dependances/langfuse_composants_dependances.md)
+  — le déploiement interne de Langfuse self-hébergé (web, worker, postgres,
   clickhouse, redis, minio) et pourquoi chaque dépendance existe.
