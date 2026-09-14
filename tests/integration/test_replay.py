@@ -1,4 +1,5 @@
 import pytest
+from structlog.testing import capture_logs
 
 from mardik.agent import Agent
 from mardik.errors import LLMTimeoutError
@@ -56,3 +57,12 @@ def test_replay_emits_latency_metric(fake_llm, telemetry, metric_reader):
         for point in metric.data.data_points
     ]
     assert points, "expected at least one latency_ms measurement"
+
+
+def test_replay_logs_turn_completion(fake_llm, telemetry):
+    data = load_session("replay_delivery")
+    with capture_logs() as logs:
+        replay(data, _agent(fake_llm, telemetry), SessionStore())
+
+    events = [entry.get("event") for entry in logs]
+    assert "turn.completed" in events
