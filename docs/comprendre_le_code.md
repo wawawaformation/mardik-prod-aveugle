@@ -66,3 +66,15 @@ ce qui donne un contraste net entre « ce que le code est censé faire » et
 « ce qu'il fait vraiment ». Voir le schéma associé :
 [`images/pipeline_run_turn_reel.drawio`](images/pipeline_run_turn_reel.drawio)
 (export : [`images/pipeline_run_turn_reel.png`](images/pipeline_run_turn_reel.png)).
+
+## Schéma d'observabilité — spans, métriques, logs
+
+Complémentaire au précédent : celui-ci suit la hiérarchie des spans
+(`agent.turn` → `llm.invoke` → `tool.call`) jusqu'à leur backend, et montre
+que seules les traces sont aujourd'hui centralisées (Jaeger) — métriques et
+logs restent en sortie standard du processus, sans Prometheus/Loki/Grafana
+câblés (contrairement au pipeline RAG de l'article transposé par Sofiane
+dans `livrables/article_reel/`).
+
+[`images/pipeline_observabilite_mardik.drawio`](images/pipeline_observabilite_mardik.drawio)
+(export : [`images/pipeline_observabilite_mardik.png`](images/pipeline_observabilite_mardik.png)).
