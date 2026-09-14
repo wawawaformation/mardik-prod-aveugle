@@ -40,3 +40,19 @@ def test_replay_produces_single_connected_trace(fake_llm, telemetry, span_export
 
     trace_ids = {span.context.trace_id for span in spans.values()}
     assert len(trace_ids) == 1
+
+
+def test_replay_emits_latency_metric(fake_llm, telemetry, metric_reader):
+    data = load_session("replay_delivery")
+    replay(data, _agent(fake_llm, telemetry), SessionStore())
+
+    metrics_data = metric_reader.get_metrics_data()
+    points = [
+        point
+        for rm in metrics_data.resource_metrics
+        for sm in rm.scope_metrics
+        for metric in sm.metrics
+        if metric.name == "latency_ms"
+        for point in metric.data.data_points
+    ]
+    assert points, "expected at least one latency_ms measurement"
