@@ -3,6 +3,27 @@
 Format : le plus récent en premier. Chaque entrée référence le test qui
 spécifiait le comportement attendu.
 
+## 2026-09-14 13:28 CEST — Exploration : export des traces vers Langfuse self-hébergé
+
+Ajout d'un second backend d'observabilité, en plus de Jaeger, pour explorer
+Langfuse (self-hébergé via Docker) — voir
+`docs/superpowers/specs/2026-09-14-langfuse-self-hosted-design.md`. Pas un
+correctif d'incident : une exploration pédagogique.
+
+- `telemetry.py` : `build_telemetry` accepte des exportateurs de spans
+  additionnels ; `build_default_telemetry` construit un exportateur
+  OTLP/HTTP vers Langfuse (Basic Auth) si `LANGFUSE_PUBLIC_KEY`/
+  `LANGFUSE_SECRET_KEY` sont configurées — sinon comportement inchangé.
+- `docker-compose.yml` : stack Langfuse self-hébergé (v3 — voir note de
+  version dans le plan d'implémentation ; v4 désactive par défaut l'API de
+  lecture utilisée par le test de vérification), avec auto-provisioning
+  d'un projet et de clés API au démarrage.
+- Nouveau test `tests/integration/test_live_langfuse.py` (suppose
+  `make up` fait), exclu de la CI comme `test_live_telemetry.py`.
+- Vérifié manuellement de bout en bout pendant la conception : une trace
+  envoyée via l'exportateur HTTP apparaît immédiatement dans Langfuse sous
+  le projet provisionné.
+
 ## 2026-09-14 12:26 CEST — Bruit en fin de suite : MeterProvider jamais arrêté
 
 Repéré dans les logs de la CI (visible aussi en local) : un traceback
