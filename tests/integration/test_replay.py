@@ -1,3 +1,5 @@
+import threading
+
 import pytest
 from structlog.testing import capture_logs
 
@@ -66,3 +68,20 @@ def test_replay_logs_turn_completion(fake_llm, telemetry):
 
     events = [entry.get("event") for entry in logs]
     assert "turn.completed" in events
+
+
+def test_concurrent_replay_counts_every_turn(fake_llm, telemetry):
+    data = load_session("incident_duplicate_delivery")
+    agent = _agent(fake_llm, telemetry)
+    store = SessionStore()
+
+    def deliver() -> None:
+        replay(data, agent, store)
+
+    threads = [threading.Thread(target=deliver) for _ in range(2)]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
+    assert store.turns(data["session_id"]) == 2

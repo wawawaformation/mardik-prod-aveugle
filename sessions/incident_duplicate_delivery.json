@@ -1,0 +1,6 @@
+{
+  "session_id": "incident-duplicate-delivery-001",
+  "messages": [
+    {"role": "user", "content": "Bonjour, où en est ma commande #3157 ?"}
+  ]
+}
