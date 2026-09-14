@@ -13,6 +13,9 @@ class Settings:
     otel_endpoint: str
     service_name: str
     log_level: str
+    langfuse_host: str
+    langfuse_public_key: str
+    langfuse_secret_key: str
 
 
 def load_settings() -> Settings:
@@ -23,4 +26,7 @@ def load_settings() -> Settings:
         otel_endpoint=os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317"),
         service_name=os.environ.get("OTEL_SERVICE_NAME", "mardik"),
         log_level=os.environ.get("LOG_LEVEL", "INFO"),
+        langfuse_host=os.environ.get("LANGFUSE_HOST", "http://localhost:3000"),
+        langfuse_public_key=os.environ.get("LANGFUSE_PUBLIC_KEY", ""),
+        langfuse_secret_key=os.environ.get("LANGFUSE_SECRET_KEY", ""),
     )
