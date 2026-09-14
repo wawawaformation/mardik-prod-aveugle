@@ -87,3 +87,17 @@ test vérifie précisément.
 
 [`images/tests_integration_composants.drawio`](images/tests_integration_composants.drawio)
 (export : [`images/tests_integration_composants.png`](images/tests_integration_composants.png)).
+
+## Langfuse — exploration en complément de Jaeger
+
+Deux schémas produits pour l'exploration Langfuse (voir
+`docs/superpowers/specs/2026-09-14-langfuse-self-hosted-design.md`) :
+
+- [`images/traces_jaeger_langfuse_parallele.drawio`](images/traces_jaeger_langfuse_parallele.drawio)
+  (export : [`.png`](images/traces_jaeger_langfuse_parallele.png)) — comment
+  le même span part vers Jaeger (gRPC, généraliste) et Langfuse (HTTP,
+  spécifique LLM) en parallèle, indépendamment.
+- [`images/langfuse_composants_dependances.drawio`](images/langfuse_composants_dependances.drawio)
+  (export : [`.png`](images/langfuse_composants_dependances.png)) — le
+  déploiement interne de Langfuse self-hébergé (web, worker, postgres,
+  clickhouse, redis, minio) et pourquoi chaque dépendance existe.
