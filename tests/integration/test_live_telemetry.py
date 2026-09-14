@@ -26,20 +26,26 @@ def _fetch_traces(service: str, limit: int = 1) -> list[dict]:
 
 def test_default_telemetry_reaches_jaeger():
     agent = build_agent(llm=_StaticLLM())
-    store = SessionStore()
-    agent.run_turn(store, "live-telemetry-001", "Bonjour, comment allez-vous ?")
+    try:
+        store = SessionStore()
+        agent.run_turn(store, "live-telemetry-001", "Bonjour, comment allez-vous ?")
 
-    # Jaeger indexe rapidement en mémoire, mais pas instantanément : on poll
-    # plutôt que de fixer un sleep arbitraire.
-    deadline = time.monotonic() + 10
-    traces: list[dict] = []
-    while time.monotonic() < deadline:
-        try:
-            traces = _fetch_traces("mardik")
-        except urllib.error.URLError:
-            traces = []
-        if traces:
-            break
-        time.sleep(0.5)
+        # Jaeger indexe rapidement en mémoire, mais pas instantanément : on
+        # poll plutôt que de fixer un sleep arbitraire.
+        deadline = time.monotonic() + 10
+        traces: list[dict] = []
+        while time.monotonic() < deadline:
+            try:
+                traces = _fetch_traces("mardik")
+            except urllib.error.URLError:
+                traces = []
+            if traces:
+                break
+            time.sleep(0.5)
 
-    assert traces, "expected at least one trace for service 'mardik' in Jaeger"
+        assert traces, "expected at least one trace for service 'mardik' in Jaeger"
+    finally:
+        # Sans cet arrêt explicite, le thread d'export périodique des
+        # métriques (build_default_telemetry) survit à la fin du test et
+        # tente d'écrire sur stdout une fois pytest terminé.
+        agent.telemetry.shutdown()

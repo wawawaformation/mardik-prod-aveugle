@@ -3,6 +3,22 @@
 Format : le plus récent en premier. Chaque entrée référence le test qui
 spécifiait le comportement attendu.
 
+## 2026-09-14 12:26 CEST — Bruit en fin de suite : MeterProvider jamais arrêté
+
+Repéré dans les logs de la CI (visible aussi en local) : un traceback
+`Exception while exporting metrics ... I/O operation on closed file`
+apparaissait après le « 21 passed ». Cause : `build_default_telemetry`
+(utilisé par `test_default_telemetry_reaches_jaeger`) construit un
+`MeterProvider` avec un `PeriodicExportingMetricReader` — thread de fond
+jamais arrêté, qui tente d'exporter vers stdout après la fermeture de ce
+flux par pytest. Les autres tests ne sont pas concernés : ils utilisent
+`InMemoryMetricReader`, sans thread d'export réel.
+
+Corrigé : `Telemetry` garde une référence aux providers et expose
+`shutdown()` (`telemetry.py`) ; `test_live_telemetry.py` l'appelle dans un
+`finally`. Test ajouté :
+`test_telemetry.py::test_shutdown_stops_tracer_and_meter_providers`.
+
 ## 2026-09-14 12:19 CEST — Correctif mypy sur _NoOpSpan.__exit__
 
 Repéré en tâche de fond depuis la correction des incidents unitaires (mis

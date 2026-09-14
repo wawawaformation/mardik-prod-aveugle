@@ -46,7 +46,13 @@ def configure_logging(level: str = "INFO") -> None:
 class Telemetry:
     """Bundle of tracer + logger + metric instruments used by the agent."""
 
-    def __init__(self, tracer: Tracer, meter: Meter) -> None:
+    def __init__(
+        self,
+        tracer: Tracer,
+        meter: Meter,
+        tracer_provider: TracerProvider | None = None,
+        meter_provider: MeterProvider | None = None,
+    ) -> None:
         self.tracer = tracer
         self.logger = structlog.get_logger("mardik")
         self.latency_ms = meter.create_histogram(
@@ -58,9 +64,23 @@ class Telemetry:
             "errors_total",
             description="Count of agent turns that ended in an error.",
         )
+        self._tracer_provider = tracer_provider
+        self._meter_provider = meter_provider
 
     def record_latency(self, value_ms: float, **attributes: str) -> None:
         self.latency_ms.record(value_ms, attributes=attributes)
+
+    def shutdown(self) -> None:
+        """Stop background export threads (e.g. periodic metric export).
+
+        Sans cet appel, le MeterProvider continue d'exporter en tâche de
+        fond après la fin du programme (ou d'un test) et peut tenter
+        d'écrire sur un flux déjà fermé.
+        """
+        if self._tracer_provider is not None:
+            self._tracer_provider.shutdown()
+        if self._meter_provider is not None:
+            self._meter_provider.shutdown()
 
 
 def build_telemetry(
@@ -87,6 +107,8 @@ def build_telemetry(
     return Telemetry(
         tracer=tracer_provider.get_tracer("mardik"),
         meter=meter_provider.get_meter("mardik"),
+        tracer_provider=tracer_provider,
+        meter_provider=meter_provider,
     )
 
 
@@ -136,4 +158,7 @@ class NoOpTelemetry:
         self.errors = _NoOpInstrument()
 
     def record_latency(self, value_ms: float, **attributes: str) -> None:
+        pass
+
+    def shutdown(self) -> None:
         pass

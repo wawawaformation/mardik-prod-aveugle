@@ -17,3 +17,12 @@ def test_service_name_is_set_on_spans():
 
     spans = span_exporter.get_finished_spans()
     assert spans[0].resource.attributes["service.name"] == "mardik-test"
+
+
+def test_shutdown_stops_tracer_and_meter_providers():
+    telemetry = build_telemetry(
+        span_exporter=InMemorySpanExporter(),
+        metric_reader=InMemoryMetricReader(),
+    )
+
+    telemetry.shutdown()  # ne doit pas lever
