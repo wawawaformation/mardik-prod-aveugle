@@ -1,7 +1,9 @@
+import base64
+
 from opentelemetry.sdk.metrics.export import InMemoryMetricReader
 from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanExporter
 
-from mardik.telemetry import build_telemetry
+from mardik.telemetry import build_default_telemetry, build_telemetry
 
 
 def test_service_name_is_set_on_spans():
@@ -43,3 +45,25 @@ def test_extra_span_exporters_receive_the_same_spans():
 
     assert len(primary_exporter.get_finished_spans()) == 1
     assert len(secondary_exporter.get_finished_spans()) == 1
+
+
+def test_langfuse_auth_header_is_basic_base64():
+    from mardik.telemetry import _langfuse_auth_header
+
+    header = _langfuse_auth_header("pk-test", "sk-test")
+
+    assert header == "Basic " + base64.b64encode(b"pk-test:sk-test").decode()
+
+
+def test_build_default_telemetry_without_langfuse_keys_does_not_raise():
+    telemetry = build_default_telemetry(langfuse_public_key="", langfuse_secret_key="")
+    telemetry.shutdown()
+
+
+def test_build_default_telemetry_with_langfuse_keys_does_not_raise():
+    telemetry = build_default_telemetry(
+        langfuse_host="http://localhost:3000",
+        langfuse_public_key="pk-test",
+        langfuse_secret_key="sk-test",
+    )
+    telemetry.shutdown()

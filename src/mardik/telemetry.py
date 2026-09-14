@@ -7,6 +7,7 @@ exporters and inspect what was recorded; production wiring lives in
 """
 from __future__ import annotations
 
+import base64
 import logging
 
 import structlog
@@ -117,15 +118,56 @@ def build_telemetry(
     )
 
 
-def build_default_telemetry(level: str = "INFO", service_name: str = "mardik") -> Telemetry:
-    """Production wiring: OTLP/gRPC span export to the collector + periodic metrics."""
+def _langfuse_auth_header(public_key: str, secret_key: str) -> str:
+    """Build the Basic Auth header value Langfuse expects for OTLP ingestion."""
+    token = base64.b64encode(f"{public_key}:{secret_key}".encode()).decode()
+    return f"Basic {token}"
+
+
+def _build_langfuse_span_exporter(
+    host: str, public_key: str, secret_key: str
+) -> SpanExporter:
+    from opentelemetry.exporter.otlp.proto.http.trace_exporter import (
+        OTLPSpanExporter as OTLPHttpSpanExporter,
+    )
+
+    return OTLPHttpSpanExporter(
+        endpoint=f"{host}/api/public/otel/v1/traces",
+        headers={
+            "Authorization": _langfuse_auth_header(public_key, secret_key),
+            "x-langfuse-ingestion-version": "4",
+        },
+    )
+
+
+def build_default_telemetry(
+    level: str = "INFO",
+    service_name: str = "mardik",
+    langfuse_host: str = "",
+    langfuse_public_key: str = "",
+    langfuse_secret_key: str = "",
+) -> Telemetry:
+    """Production wiring: OTLP/gRPC span export to Jaeger + periodic metrics.
+
+    Si ``langfuse_public_key``/``langfuse_secret_key`` sont fournis, les
+    spans sont aussi exportés vers Langfuse (self-hébergé) en OTLP/HTTP, en
+    plus de Jaeger. gRPC n'est pas supporté par Langfuse — d'où un second
+    exportateur HTTP dédié.
+    """
     from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+
+    extra_span_exporters: list[SpanExporter] = []
+    if langfuse_public_key and langfuse_secret_key:
+        extra_span_exporters.append(
+            _build_langfuse_span_exporter(langfuse_host, langfuse_public_key, langfuse_secret_key)
+        )
 
     return build_telemetry(
         span_exporter=OTLPSpanExporter(),
         metric_reader=PeriodicExportingMetricReader(ConsoleMetricExporter()),
         level=level,
         service_name=service_name,
+        extra_span_exporters=extra_span_exporters,
     )
 
 
