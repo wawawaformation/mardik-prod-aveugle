@@ -3,6 +3,25 @@
 Format : le plus récent en premier. Chaque entrée référence le test qui
 spécifiait le comportement attendu.
 
+## 2026-09-14 14:48 CEST — 12ᵉ incident : le LLM de prod n'a jamais fonctionné
+
+Repéré en testant le LLM réel pour la démo (jamais exercé jusqu'ici — tous
+les tests utilisent un LLM factice) : `uv run python -m mardik.app` plantait
+avec `azure.core.exceptions.HttpResponseError: (BadRequest) API version not
+supported`. Cause racine (`llm.py::get_llm`) : le code utilisait
+`AzureAIChatCompletionsModel` (protocole natif Azure AI Inference), alors
+que l'endpoint configuré (`.../openai/v1`) est une route **compatible
+OpenAI** — mauvais client, pas un problème de clé ou de quota. Vérifié en
+appelant l'endpoint directement avec le SDK `openai` : réponse correcte.
+
+Corrigé : `get_llm` utilise désormais `langchain_openai.ChatOpenAI` avec
+`base_url` pointé sur l'endpoint Azure. Dépendance `langchain-azure-ai`
+retirée (devenue inutile), `langchain-openai` ajoutée. Test ajouté :
+`tests/unit/test_llm.py::test_get_llm_targets_the_configured_openai_compatible_endpoint`.
+Vérifié de bout en bout avec un vrai appel : réponse reçue, log
+`turn.completed` émis, métrique `latency_ms` enregistrée, trace remontée
+dans Jaeger — le premier appel LLM réel de tout le projet a fonctionné.
+
 ## 2026-09-14 13:32 CEST — .env chargé automatiquement (python-dotenv)
 
 Repéré juste après l'ajout de Langfuse : `.env` n'était jamais chargé par

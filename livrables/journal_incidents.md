@@ -15,9 +15,12 @@ Détail complet (cause + correctif) dans `CHANGELOG.md`. Ici : vue de synthèse.
 | 9 | Fixture de session manquante | `sessions/incident_timeout.json` absent | fixture ajoutée | intégration |
 | 10 | Chemin d'échec invisible | `errors_total` jamais incrémenté, pas de log d'erreur | métrique `errors_total` + log `turn.failed` | unitaire + intégration |
 | 11 | Traces invisibles sous le bon nom dans Jaeger | `service.name` jamais câblé dans la `Resource` OTel | `Resource(service.name=...)` transmise aux providers | intégration (contre Jaeger réel) |
+| 12 | Le LLM de production n'a jamais fonctionné | `get_llm` utilisait le client Azure AI Inference natif, alors que l'endpoint est compatible OpenAI | `langchain_openai.ChatOpenAI` avec `base_url` | unitaire + appel réel de bout en bout |
 
-**11 incidents corrigés**, suite complète verte (`uv run pytest` → 20/20, Jaeger démarré).
-10 des 11 sont vérifiés par un test d'intégration ; seul #8 (câblage télémétrie de
-`build_agent`) reste unitaire. L'incident #11 a été trouvé en testant directement contre
-un vrai Jaeger plutôt qu'avec des exporteurs en mémoire — preuve que ce type de
-vérification a sa valeur au-delà des tests hermétiques.
+**12 incidents corrigés**, suite complète verte (`uv run pytest` → 28/28 sans
+Langfuse/Jaeger requis). 10 des 12 sont vérifiés par un test d'intégration ; #8
+(câblage télémétrie de `build_agent`) et #12 (client LLM) restent unitaires,
+ce dernier vérifié en plus par un vrai appel de bout en bout. Les incidents
+#11 et #12 ont tous deux été trouvés en testant contre de vrais services
+plutôt qu'avec des mocks — preuve que ce type de vérification a une valeur
+que les tests hermétiques n'ont pas.
