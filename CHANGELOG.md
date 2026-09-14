@@ -3,6 +3,23 @@
 Format : le plus récent en premier. Chaque entrée référence le test qui
 spécifiait le comportement attendu.
 
+## 2026-09-14 11:49 CEST — Le chemin d'échec est désormais vérifié par rejeu de session
+
+Ajout de `test_replay_timeout_increments_error_counter` et
+`test_replay_timeout_logs_failure` (`tests/integration/test_replay.py`),
+réutilisant la fixture `incident_timeout` déjà rejouée par
+`test_replay_timeout_incident`. Ils prouvent que `errors_total` et le log
+`turn.failed` (ajoutés dans l'entrée précédente) sont bien émis quand
+l'incident se produit via le chemin réel (rejeu), pas seulement en appelant
+`Agent.run_turn` directement dans un test unitaire.
+
+Bilan : 9 des 10 incidents du journal (`livrables/journal_incidents.md`)
+sont maintenant vérifiés par un test d'intégration. Le 10ᵉ (câblage
+télémétrie dans `build_agent`) reste volontairement unitaire uniquement :
+la télémétrie par défaut utilise un exporteur OTLP réel, le vérifier via un
+rejeu complet nécessiterait une vraie connexion réseau vers un collecteur,
+ce qui rendrait le test lent et fragile pour peu de valeur ajoutée.
+
 ## 2026-09-14 11:39 CEST — Instrumentation du chemin d'échec (métrique errors_total + log turn.failed)
 
 En revue de la checklist "Instrumenter l'application (traces, métriques,

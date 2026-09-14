@@ -32,6 +32,33 @@ def test_replay_timeout_incident(timeout_llm, telemetry):
         replay(data, _agent(timeout_llm, telemetry), SessionStore())
 
 
+def test_replay_timeout_increments_error_counter(timeout_llm, telemetry, metric_reader):
+    data = load_session("incident_timeout")
+    with pytest.raises(LLMTimeoutError):
+        replay(data, _agent(timeout_llm, telemetry), SessionStore())
+
+    metrics_data = metric_reader.get_metrics_data()
+    points = [
+        point
+        for rm in metrics_data.resource_metrics
+        for sm in rm.scope_metrics
+        for metric in sm.metrics
+        if metric.name == "errors_total"
+        for point in metric.data.data_points
+    ]
+    assert points, "expected at least one errors_total measurement"
+
+
+def test_replay_timeout_logs_failure(timeout_llm, telemetry):
+    data = load_session("incident_timeout")
+    with capture_logs() as logs:
+        with pytest.raises(LLMTimeoutError):
+            replay(data, _agent(timeout_llm, telemetry), SessionStore())
+
+    events = [entry.get("event") for entry in logs]
+    assert "turn.failed" in events
+
+
 def test_replay_produces_single_connected_trace(fake_llm, telemetry, span_exporter):
     data = load_session("replay_delivery")
     replay(data, _agent(fake_llm, telemetry), SessionStore())

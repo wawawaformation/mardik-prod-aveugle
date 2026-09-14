@@ -13,6 +13,9 @@ Détail complet (cause + correctif) dans `CHANGELOG.md`. Ici : vue de synthèse.
 | 7 | Appels d'outils invisibles dans les traces | `_dispatch_tool` sans span | span `tool.call` ajouté | unitaire + intégration |
 | 8 | Télémétrie jamais câblée en prod | `build_agent` ignorait le paramètre `telemetry` | télémétrie par défaut construite et transmise | unitaire |
 | 9 | Fixture de session manquante | `sessions/incident_timeout.json` absent | fixture ajoutée | intégration |
-| 10 | Chemin d'échec invisible | `errors_total` jamais incrémenté, pas de log d'erreur | métrique `errors_total` + log `turn.failed` | unitaire |
+| 10 | Chemin d'échec invisible | `errors_total` jamais incrémenté, pas de log d'erreur | métrique `errors_total` + log `turn.failed` | unitaire + intégration |
 
-**10 incidents corrigés**, suite complète verte (`uv run pytest` → 16/16).
+**10 incidents corrigés**, suite complète verte (`uv run pytest` → 18/18). 9 des 10 sont
+vérifiés par un test d'intégration (rejeu de session) ; seul #8 (câblage télémétrie de
+`build_agent`) reste unitaire, car sa vérification par rejeu exigerait une vraie connexion
+réseau vers un collecteur OTLP.
