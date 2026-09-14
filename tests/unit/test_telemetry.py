@@ -26,3 +26,20 @@ def test_shutdown_stops_tracer_and_meter_providers():
     )
 
     telemetry.shutdown()  # ne doit pas lever
+
+
+def test_extra_span_exporters_receive_the_same_spans():
+    primary_exporter = InMemorySpanExporter()
+    secondary_exporter = InMemorySpanExporter()
+    telemetry = build_telemetry(
+        span_exporter=primary_exporter,
+        metric_reader=InMemoryMetricReader(),
+        extra_span_exporters=[secondary_exporter],
+    )
+
+    with telemetry.tracer.start_as_current_span("probe"):
+        pass
+    telemetry.shutdown()
+
+    assert len(primary_exporter.get_finished_spans()) == 1
+    assert len(secondary_exporter.get_finished_spans()) == 1

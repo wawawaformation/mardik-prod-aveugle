@@ -88,10 +88,13 @@ def build_telemetry(
     metric_reader: MetricReader | None = None,
     level: str = "INFO",
     service_name: str = "mardik",
+    extra_span_exporters: list[SpanExporter] | None = None,
 ) -> Telemetry:
     """Build a self-contained Telemetry bundle.
 
     Defaults to console exporters; tests pass in-memory exporters/readers.
+    ``extra_span_exporters`` reçoit chacun son propre SpanProcessor, en plus
+    de celui de ``span_exporter`` (ex. exporter aussi vers Langfuse).
     """
     configure_logging(level)
     resource = Resource.create({"service.name": service_name})
@@ -100,6 +103,8 @@ def build_telemetry(
     tracer_provider.add_span_processor(
         SimpleSpanProcessor(span_exporter or ConsoleSpanExporter())
     )
+    for exporter in extra_span_exporters or []:
+        tracer_provider.add_span_processor(SimpleSpanProcessor(exporter))
 
     reader = metric_reader or PeriodicExportingMetricReader(ConsoleMetricExporter())
     meter_provider = MeterProvider(resource=resource, metric_readers=[reader])
