@@ -32,10 +32,16 @@ et `minio` (événements bruts).
 - `postgres` porte les métadonnées (projets, utilisateurs, clés API),
   `clickhouse` porte les données analytiques (traces/observations) —
   séparation classique OLTP / OLAP.
+- **Images épinglées en v3, pas v4.** Vérifié en démarrant réellement les
+  deux versions : les images `:4` tournent par défaut en mode
+  `events_only`, qui désactive `GET /api/public/traces` (404) au profit
+  d'une nouvelle API v2 plus complexe — inutile pour une exploration
+  simple. `:3` fonctionne immédiatement avec l'API classique.
 
 ## Voir aussi
 
 - `docs/superpowers/specs/2026-09-14-langfuse-self-hosted-design.md`
+- `docs/superpowers/plans/2026-09-14-langfuse-self-hosted.md` (note de
+  version détaillée)
 - [`traces_jaeger_langfuse_parallele.md`](../traces_jaeger_langfuse_parallele/traces_jaeger_langfuse_parallele.md)
-- Compose de référence Langfuse : `docker-compose.yml` (à venir dans le plan
-  d'implémentation)
+- `docker-compose.yml`, `CHANGELOG.md`
