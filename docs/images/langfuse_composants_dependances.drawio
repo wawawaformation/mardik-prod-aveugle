@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mxfile host="app.diagrams.net" type="device">
   <diagram id="langfuse-composants" name="Langfuse — composants et dépendances">
-    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1850" pageHeight="620" math="0" shadow="0">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1850" pageHeight="690" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -37,8 +37,8 @@
           <mxGeometry x="950" y="340" width="270" height="80" as="geometry" />
         </mxCell>
 
-        <mxCell id="minio" value="«node»&lt;br&gt;&lt;b&gt;minio&lt;/b&gt;&lt;br&gt;S3 compatible&lt;br&gt;gros payloads : médias, exports batch, événements" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
-          <mxGeometry x="1450" y="340" width="270" height="80" as="geometry" />
+        <mxCell id="minio" value="«node»&lt;br&gt;&lt;b&gt;minio&lt;/b&gt;&lt;br&gt;S3 compatible&lt;br&gt;étape obligatoire de l'ingestion (event upload) ;&lt;br&gt;médias/exports batch en plus, mais pas la raison d'être" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="1450" y="340" width="270" height="100" as="geometry" />
         </mxCell>
 
         <!-- Flèches -->
@@ -53,14 +53,14 @@
 
         <mxCell id="e6" value="écriture&#10;traces/observations" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#B85450;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.15;exitY=1;entryX=0.85;entryY=0;" edge="1" parent="1" source="worker" target="clickhouse"><mxGeometry relative="1" as="geometry" /></mxCell>
 
-        <mxCell id="e7" value="médias,&#10;exports (S3)" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#B85450;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="worker" target="minio"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e7" value="event upload&#10;(ingestion)" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#B85450;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="worker" target="minio"><mxGeometry relative="1" as="geometry" /></mxCell>
 
-        <mxCell id="note" value="&lt;b&gt;Pourquoi Redis ?&lt;/b&gt; L'ingestion OTLP doit répondre vite à Mardik : langfuse-web ne fait qu'empiler le lot reçu dans Redis (file BullMQ) et répond aussitôt. C'est langfuse-worker, en tâche de fond, qui traite réellement les événements et les écrit dans ClickHouse — sans Redis, l'ingestion bloquerait le web sur l'écriture analytique." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;align=left;verticalAlign=top;fontSize=11;spacingLeft=12;spacingTop=8;spacingRight=12;" vertex="1" parent="1">
-          <mxGeometry x="450" y="460" width="1270" height="60" as="geometry" />
+        <mxCell id="note" value="&lt;b&gt;Pourquoi Redis ?&lt;/b&gt; L'ingestion OTLP doit répondre vite à Mardik : langfuse-web ne fait qu'empiler le lot reçu dans Redis (file BullMQ) et répond aussitôt. C'est langfuse-worker, en tâche de fond, qui traite réellement les événements et les écrit dans ClickHouse — sans Redis, l'ingestion bloquerait le web sur l'écriture analytique.&lt;br&gt;&lt;br&gt;&lt;b&gt;MinIO est-il vraiment indispensable ?&lt;/b&gt; Oui, avec cette version de Langfuse (v4) : web et worker ont un &lt;i&gt;depends_on&lt;/i&gt; strict sur MinIO (ils ne démarrent pas sans lui), et l'« event upload » vers S3 fait partie du chemin d'ingestion normal — sans flag pour le désactiver, contrairement à l'export batch (&lt;i&gt;LANGFUSE_S3_BATCH_EXPORT_ENABLED&lt;/i&gt;, désactivé par défaut). Ce n'est donc pas réservé aux médias/gros fichiers." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;align=left;verticalAlign=top;fontSize=11;spacingLeft=12;spacingTop=8;spacingRight=12;" vertex="1" parent="1">
+          <mxGeometry x="450" y="460" width="1270" height="115" as="geometry" />
         </mxCell>
 
         <mxCell id="legende" value="&lt;b&gt;Légende&lt;/b&gt;   bleu = Mardik   ·   orange = processus Langfuse (conteneur applicatif)   ·   rouge = dépendance d'infrastructure (état/stockage)   ·   trait plein = communication réelle" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CCCCCC;align=left;verticalAlign=middle;fontSize=11;spacingLeft=12;spacingRight=12;" vertex="1" parent="1">
-          <mxGeometry x="40" y="540" width="1680" height="30" as="geometry" />
+          <mxGeometry x="40" y="600" width="1680" height="30" as="geometry" />
         </mxCell>
 
       </root>
