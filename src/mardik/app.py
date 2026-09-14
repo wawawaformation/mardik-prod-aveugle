@@ -24,7 +24,11 @@ def build_agent(
         from .telemetry import build_default_telemetry
 
         telemetry = build_default_telemetry(
-            level=settings.log_level, service_name=settings.service_name
+            level=settings.log_level,
+            service_name=settings.service_name,
+            langfuse_host=settings.langfuse_host,
+            langfuse_public_key=settings.langfuse_public_key,
+            langfuse_secret_key=settings.langfuse_secret_key,
         )
     return Agent(llm=llm, tools=DEFAULT_TOOLS, telemetry=telemetry)
 
