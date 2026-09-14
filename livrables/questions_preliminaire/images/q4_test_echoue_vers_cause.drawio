@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="q4-cause-racine" name="Du test echoue a la cause">
+    <mxGraphModel dx="900" dy="1300" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="titre" value="&lt;b&gt;Q4 — Relier un test d'intégration échoué à sa cause via les traces&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=15;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="40" y="22" width="750" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="sstitre" value="Objectif de lecture : dérouler la méthode de diagnostic, de l'échec du test jusqu'au test de non-régression." style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="40" y="50" width="750" height="18" as="geometry" />
+        </mxCell>
+
+        <mxCell id="precond" value="&lt;b&gt;Précondition&lt;/b&gt; — le lanceur de tests journalise le &lt;b&gt;trace_id&lt;/b&gt; de chaque requête avec le résultat, succès comme échec. Sans cela, un simple échec d'assertion n'est pas actionnable." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;align=left;verticalAlign=middle;fontSize=11;spacingLeft=12;spacingRight=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="82" width="750" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="start" value="Test d'intégration en échec" style="ellipse;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="230" y="155" width="220" height="42" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a1" value="&lt;b&gt;1. Localiser la trace&lt;/b&gt;&lt;br&gt;par trace_id, ou par filtrage sur la session, le statut d'erreur ou un extrait de la sortie" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=11;spacingLeft=8;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="170" y="222" width="340" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a2" value="&lt;b&gt;2. Parcourir l'arbre de spans&lt;/b&gt;&lt;br&gt;dans l'ordre chronologique" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=11;spacingLeft=8;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="170" y="307" width="340" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="d1" value="La sortie de ce span est-elle&#10;celle qu'il aurait dû produire ?" style="shape=rhombus;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="160" y="390" width="360" height="105" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ret1" value="Passer au span suivant" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="580" y="415" width="200" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a3" value="&lt;b&gt;3. Isoler la couche fautive&lt;/b&gt;&lt;br&gt;en inspectant les métadonnées du span&lt;br&gt;&lt;br&gt;— récupération : contexte vide ou hors sujet&lt;br&gt;— prompt : rendu, version&lt;br&gt;— outil : arguments, résultat, statut&lt;br&gt;— modèle : version, configuration" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;align=left;verticalAlign=top;fontSize=11;spacingLeft=12;spacingTop=8;spacingRight=10;" vertex="1" parent="1">
+          <mxGeometry x="170" y="525" width="340" height="125" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a4" value="&lt;b&gt;Corriger, puis rejouer le scénario&lt;/b&gt;&lt;br&gt;et comparer les traces avant et après" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=11;spacingLeft=8;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="170" y="680" width="340" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="d2" value="La trace est-elle conforme&#10;après le correctif ?" style="shape=rhombus;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="160" y="765" width="360" height="105" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a5" value="&lt;b&gt;4. Promouvoir la trace fautive&lt;br&gt;en test de non-régression&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=11;spacingLeft=8;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="170" y="900" width="340" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="end" value="L'incident ne peut plus revenir silencieusement" style="ellipse;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=2;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="200" y="990" width="280" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="start" target="a1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="a1" target="a2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="a2" target="d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e4" value="oui" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#82B366;fontSize=11;fontColor=#5A8A3C;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="d1" target="ret1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#82B366;exitX=0.5;exitY=0;entryX=1;entryY=0.5;" edge="1" parent="1" source="ret1" target="a2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e6" value="non" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#B85450;fontSize=11;fontColor=#B85450;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="d1" target="a3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="a3" target="a4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="a4" target="d2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e9" value="non — réexaminer&#10;la couche en cause" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#B85450;fontSize=10;fontColor=#B85450;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="d2" target="a3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="817" />
+              <mxPoint x="600" y="587" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e10" value="oui" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#82B366;fontSize=11;fontColor=#5A8A3C;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="d2" target="a5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="a5" target="end">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="note-cle" value="&lt;b&gt;Ce qui distingue cette méthode d'un débogage classique&lt;/b&gt; — l'étape 2 compare chaque étape à son attendu, et non la seule réponse finale. C'est ce qui permet de trancher entre une erreur de récupération, un problème de prompt, un échec d'outil et un défaut de génération, que la sortie finale rend indiscernables." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;align=left;verticalAlign=middle;fontSize=11;spacingLeft=12;spacingRight=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1060" width="750" height="70" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="q2-metriques" name="Metriques de sante">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="titre" value="&lt;b&gt;Q2 — Les métriques qui révèlent la santé d'une application IA&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=17;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="50" y="25" width="1090" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sstitre" value="Objectif de lecture : classer les métriques par famille et repérer celles à instrumenter en premier." style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="50" y="55" width="1090" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="alerte" value="&lt;b&gt;Point de départ&lt;/b&gt; — les quatre signaux d'or de la supervision classique (latence, trafic, erreurs, saturation) ne couvrent que la première colonne. Un appel au modèle qui retourne HTTP 200 indique que l'inférence a abouti, &lt;b&gt;pas que la génération est bonne&lt;/b&gt;. Les trois autres colonnes sont propres aux systèmes LLM." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;align=left;verticalAlign=middle;fontSize=12;spacingLeft=12;spacingRight=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="90" width="1090" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="racine" value="&lt;b&gt;Santé d'une application IA&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#333333;strokeWidth=2;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="420" y="195" width="350" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="h1" value="&lt;b&gt;OPÉRATIONNEL&lt;/b&gt;&#10;le service tient-il" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="320" width="250" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="h2" value="&lt;b&gt;ÉCONOMIQUE&lt;/b&gt;&#10;combien il coûte" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="330" y="320" width="250" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="h3" value="&lt;b&gt;COMPORTEMENT D'AGENT&lt;/b&gt;&#10;comment il s'exécute" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="610" y="320" width="250" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="h4" value="&lt;b&gt;QUALITÉ&lt;/b&gt;&#10;la réponse est-elle juste" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="890" y="320" width="250" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="racine" target="h1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="racine" target="h2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="racine" target="h3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="racine" target="h4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c1" value="&lt;b&gt;PRIO 1&lt;/b&gt; Latence par étape, en P95&lt;br&gt;&lt;br&gt;&lt;b&gt;PRIO 1&lt;/b&gt; Taux d'erreurs segmenté par cause :&lt;br&gt;— technique (timeout, quota, réseau)&lt;br&gt;— outil (API métier, validation)&lt;br&gt;— réponse invalide (format, champ manquant)&lt;br&gt;&lt;br&gt;Latence bout en bout et TTFT&lt;br&gt;&lt;br&gt;Taux de requêtes, sessions actives&lt;br&gt;&lt;br&gt;&lt;i&gt;Toujours en P50 / P95 / P99, jamais en moyenne seule.&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F7FAFF;strokeColor=#6C8EBF;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="50" y="375" width="250" height="270" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c2" value="&lt;b&gt;PRIO 2&lt;/b&gt; Tokens et coût par session&lt;br&gt;&lt;br&gt;Tokens entrée / sortie / cache, ventilés par modèle, fonctionnalité et client&lt;br&gt;&lt;br&gt;Coût estimé par requête&lt;br&gt;&lt;br&gt;Rythme de consommation face au budget&lt;br&gt;&lt;br&gt;&lt;i&gt;Sert autant à maîtriser la dépense qu'à détecter une anomalie : une session dont les tokens explosent signale souvent une boucle d'agent.&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFBF5;strokeColor=#D79B00;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="330" y="375" width="250" height="270" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c3" value="&lt;b&gt;PRIO 1&lt;/b&gt; Nombre d'étapes par exécution&lt;br&gt;&lt;br&gt;&lt;b&gt;PRIO 1&lt;/b&gt; Nombre de retries et de boucles&lt;br&gt;&lt;br&gt;Taux d'échec et durée par outil&lt;br&gt;&lt;br&gt;Justesse des arguments passés aux outils&lt;br&gt;&lt;br&gt;Branche de routage sélectionnée&lt;br&gt;&lt;br&gt;&lt;i&gt;Famille souvent absente des tableaux de bord, et pourtant la plus révélatrice d'une panne récurrente.&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FCFAFD;strokeColor=#9673A6;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="610" y="375" width="250" height="270" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c4" value="&lt;b&gt;PRIO 3&lt;/b&gt; Score sur les scénarios de référence&lt;br&gt;&lt;br&gt;Ancrage dans le contexte fourni, indicateur direct d'hallucination&lt;br&gt;&lt;br&gt;Pertinence, factualité, utilité&lt;br&gt;&lt;br&gt;Toxicité et non-conformité&lt;br&gt;&lt;br&gt;&lt;b&gt;Signaux précoces, sans modèle d'évaluation :&lt;/b&gt;&lt;br&gt;— taux de feedback négatif&lt;br&gt;— taux de régénération&lt;br&gt;— taux de refus du modèle" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8FCF7;strokeColor=#82B366;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;spacingTop=8;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="890" y="375" width="250" height="270" as="geometry" />
+        </mxCell>
+
+        <mxCell id="note-p" value="&lt;b&gt;Priorisation pour la mission&lt;/b&gt; — &lt;b&gt;PRIO 1&lt;/b&gt; les trois métriques qui pointent le plus directement une panne récurrente : l'étape lente, la cause de l'erreur, la boucle d'agent. &lt;b&gt;PRIO 2&lt;/b&gt; dérives de contexte et ruptures de contrat. &lt;b&gt;PRIO 3&lt;/b&gt; régressions fonctionnelles invisibles techniquement, à instrumenter une fois la base en place." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;align=left;verticalAlign=middle;fontSize=12;spacingLeft=12;spacingRight=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="675" width="1090" height="70" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

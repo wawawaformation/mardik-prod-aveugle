@@ -1,0 +1,223 @@
+% =========================================================
+% Style Pandoc PDF - Note de diagnostic Mardik
+% Style local au projet, derive de ~/.config/pandoc/styles/conception.tex
+% David LEGRAND et Sofiane
+% =========================================================
+
+% ---------------------------------------------------------
+% Langue, typographie, micro-ajustements
+% ---------------------------------------------------------
+\usepackage{polyglossia}
+\setmainlanguage{french}
+
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+
+% ---------------------------------------------------------
+% Couleurs sobres
+% ---------------------------------------------------------
+\definecolor{maincolor}{HTML}{2F5597}
+\definecolor{secondarycolor}{HTML}{444444}
+\definecolor{lightgray}{HTML}{F4F4F4}
+\definecolor{mediumgray}{HTML}{DDDDDD}
+\definecolor{darkgray}{HTML}{333333}
+\definecolor{codebg}{HTML}{F7F7F7}
+
+% ---------------------------------------------------------
+% Mise en page générale
+% ---------------------------------------------------------
+\usepackage{geometry}
+\geometry{
+  margin=2cm
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+\linespread{1.08}
+
+% Évite les lignes seules en haut ou bas de page
+\clubpenalty=10000
+\widowpenalty=10000
+
+% ---------------------------------------------------------
+% Titres
+% ---------------------------------------------------------
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\Large\bfseries\color{maincolor}}
+  {\thesection}
+  {0.8em}
+  {}
+
+\titleformat{\subsection}
+  {\large\bfseries\color{darkgray}}
+  {\thesubsection}
+  {0.8em}
+  {}
+
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{secondarycolor}}
+  {\thesubsubsection}
+  {0.8em}
+  {}
+
+\titlespacing*{\section}
+  {0pt}
+  {1.4em}
+  {0.6em}
+
+\titlespacing*{\subsection}
+  {0pt}
+  {1.1em}
+  {0.4em}
+
+\titlespacing*{\subsubsection}
+  {0pt}
+  {0.9em}
+  {0.3em}
+
+% ---------------------------------------------------------
+% Listes
+% ---------------------------------------------------------
+\usepackage{enumitem}
+
+% Listes globales
+\setlist{
+  itemsep=0.55em,
+  topsep=0.5em,
+  parsep=0.2em,
+  partopsep=0pt,
+  leftmargin=1.5em
+}
+
+% Listes à puces
+\setlist[itemize]{
+  label=--,
+  itemsep=0.55em
+}
+
+% Listes numérotées
+\setlist[enumerate]{
+  itemsep=0.55em
+}
+
+% Listes imbriquées un peu plus compactes
+\setlist[itemize,2]{
+  itemsep=0.35em,
+  topsep=0.3em
+}
+
+\setlist[enumerate,2]{
+  itemsep=0.35em,
+  topsep=0.3em
+}
+
+% ---------------------------------------------------------
+% Tableaux
+% ---------------------------------------------------------
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{colortbl}
+
+\renewcommand{\arraystretch}{1.25}
+
+% ---------------------------------------------------------
+% Citations Markdown
+% ---------------------------------------------------------
+\usepackage{framed}
+
+\let\oldquote\quote
+\let\endoldquote\endquote
+
+\renewenvironment{quote}
+  {
+    \def\FrameCommand{
+      {\color{maincolor}\vrule width 3pt}
+      \hspace{0.8em}
+    }
+    \MakeFramed{\advance\hsize-\width \FrameRestore}
+    \small
+    \itshape
+  }
+  {
+    \endMakeFramed
+  }
+
+% ---------------------------------------------------------
+% Code inline et blocs de code
+% ---------------------------------------------------------
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{
+  breaklines,
+  breakanywhere,
+  commandchars=\\\{\},
+  fontsize=\small
+}
+
+% Fond léger pour certains environnements verbatim simples
+\usepackage{mdframed}
+
+\BeforeBeginEnvironment{verbatim}{%
+  \begin{mdframed}[
+    backgroundcolor=codebg,
+    linecolor=mediumgray,
+    linewidth=0.5pt,
+    roundcorner=4pt,
+    innertopmargin=0.6em,
+    innerbottommargin=0.6em,
+    innerleftmargin=0.8em,
+    innerrightmargin=0.8em
+  ]
+}
+
+\AfterEndEnvironment{verbatim}{%
+  \end{mdframed}
+}
+
+% ---------------------------------------------------------
+% En-têtes et pieds de page
+% ---------------------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\fancyhf{}
+\fancyhead[L]{Note de diagnostic -- Application Mardik}
+\fancyhead[R]{\thepage}
+\fancyfoot[L]{David et Sofiane}
+\fancyfoot[R]{\today}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% ---------------------------------------------------------
+% Liens
+% ---------------------------------------------------------
+\usepackage{hyperref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=maincolor,
+  urlcolor=maincolor,
+  citecolor=maincolor,
+  pdfborder={0 0 0}
+}
+
+% ---------------------------------------------------------
+% Images — largeur max avec proportion conservée
+% ---------------------------------------------------------
+\setkeys{Gin}{
+  width=\linewidth,
+  height=0.82\textheight,
+  keepaspectratio
+}
+
+% ---------------------------------------------------------
+% Table des matières
+% ---------------------------------------------------------
+\setcounter{tocdepth}{3}

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="q3-instrumentation" name="Points d'instrumentation">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="titre" value="&lt;b&gt;Q3 — Les points à instrumenter pour rendre une trace exploitable&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=17;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="50" y="20" width="1090" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sstitre" value="Objectif de lecture : situer chaque span sur le flux applicatif et savoir quels attributs y attacher." style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="50" y="48" width="1090" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="client" value="Client (web ou mobile)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="440" y="85" width="290" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gw" value="&lt;b&gt;API Gateway&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SPAN RACINE&lt;/b&gt; — trace_id, session_id, user_id, fonctionnalité, client, entrée utilisateur, sortie finale" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;align=left;verticalAlign=middle;fontSize=11;spacingLeft=12;spacingRight=12;" vertex="1" parent="1">
+          <mxGeometry x="310" y="160" width="550" height="75" as="geometry" />
+        </mxCell>
+
+        <mxCell id="orch" value="&lt;b&gt;Orchestrateur d'agent&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SPAN agent_run&lt;/b&gt; — numéro d'étape, route choisie, état de la mémoire, décision prise&lt;br&gt;&lt;b&gt;VERSIONS&lt;/b&gt; — modèle, prompt, configuration d'agent et règles de routage" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;align=left;verticalAlign=middle;fontSize=11;spacingLeft=12;spacingRight=12;" vertex="1" parent="1">
+          <mxGeometry x="310" y="270" width="550" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="retr" value="&lt;b&gt;Récupération (RAG)&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SPAN&lt;/b&gt;&lt;br&gt;— source interrogée&lt;br&gt;— nombre de documents&lt;br&gt;— taille du contexte assemblé&lt;br&gt;— signaux de pertinence" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;align=left;verticalAlign=top;fontSize=11;spacingLeft=12;spacingTop=8;spacingRight=10;" vertex="1" parent="1">
+          <mxGeometry x="60" y="410" width="330" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="llm" value="&lt;b&gt;Fournisseur de modèle&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SPAN&lt;/b&gt;&lt;br&gt;— modèle, fournisseur, paramètres&lt;br&gt;— &lt;b&gt;prompt effectivement envoyé&lt;/b&gt;&lt;br&gt;— tokens entrée / sortie / cache&lt;br&gt;— TTFT, latence, raison d'arrêt" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;align=left;verticalAlign=top;fontSize=11;spacingLeft=12;spacingTop=8;spacingRight=10;" vertex="1" parent="1">
+          <mxGeometry x="420" y="410" width="330" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tools" value="&lt;b&gt;Outils et API métier&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SPAN&lt;/b&gt;&lt;br&gt;— nom de l'outil&lt;br&gt;— arguments transmis&lt;br&gt;— résultat retourné&lt;br&gt;— statut, erreur, latence" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;align=left;verticalAlign=top;fontSize=11;spacingLeft=12;spacingTop=8;spacingRight=10;" vertex="1" parent="1">
+          <mxGeometry x="780" y="410" width="330" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="collecte" value="&lt;b&gt;Collecte et restitution&lt;/b&gt; — export OpenTelemetry, contexte de trace propagé&lt;br&gt;&lt;br&gt;Traces : arbre de spans parcourable   ·   Métriques : séries agrégées et alertes&lt;br&gt;Logs : corrélés par trace_id et span_id   ·   Évaluations : scores rattachés à la trace" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;align=left;verticalAlign=middle;fontSize=11;spacingLeft=12;spacingRight=12;" vertex="1" parent="1">
+          <mxGeometry x="310" y="620" width="550" height="85" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="client" target="gw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="gw" target="orch">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="orch" target="retr">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="orch" target="llm">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a5" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=0.75;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="orch" target="tools">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a6" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#9673A6;dashed=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;" edge="1" parent="1" source="retr" target="collecte">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a7" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#9673A6;dashed=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="llm" target="collecte">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a8" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#9673A6;dashed=1;exitX=0.5;exitY=1;entryX=0.75;entryY=0;" edge="1" parent="1" source="tools" target="collecte">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="note-regle" value="&lt;b&gt;Règle structurante&lt;/b&gt;&lt;br&gt;&lt;br&gt;Une requête utilisateur = &lt;b&gt;une trace unique et connexe&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Le contexte de trace doit être propagé à chaque invocation d'agent et chaque appel d'outil. Sans propagation, la trace se fragmente et perd toute valeur diagnostique." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;align=left;verticalAlign=top;fontSize=11;spacingLeft=12;spacingTop=8;spacingRight=10;" vertex="1" parent="1">
+          <mxGeometry x="60" y="160" width="230" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="note-conv" value="&lt;b&gt;Trois conventions&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Nommer&lt;/b&gt; les spans explicitement : research_agent:web_search, jamais tool_call.&lt;br&gt;&lt;br&gt;&lt;b&gt;Séparer&lt;/b&gt; appels au modèle, appels d'outils et transitions d'état, pour distinguer une défaillance du modèle d'une défaillance du routage.&lt;br&gt;&lt;br&gt;&lt;b&gt;Instrumenter dès le départ&lt;/b&gt;, pas après l'incident." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;align=left;verticalAlign=top;fontSize=11;spacingLeft=12;spacingTop=8;spacingRight=10;" vertex="1" parent="1">
+          <mxGeometry x="880" y="160" width="230" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="note-conf" value="&lt;b&gt;Confidentialité&lt;/b&gt; — les logs privilégient les métadonnées aux données brutes, les champs sensibles sont occultés, et l'accès aux traces est contrôlé. &lt;b&gt;Arbitrage à documenter&lt;/b&gt; : le rejeu de sessions réelles suppose de stocker des prompts réels ; les fixtures doivent donc être anonymisées à l'enregistrement, sans quoi le dispositif de test devient lui-même un problème de conformité." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;align=left;verticalAlign=middle;fontSize=11;spacingLeft=12;spacingRight=12;" vertex="1" parent="1">
+          <mxGeometry x="60" y="730" width="1050" height="65" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

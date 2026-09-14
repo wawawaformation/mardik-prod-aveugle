@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="q1a-perimetre-tests" name="Perimetre des tests">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="titre" value="&lt;b&gt;Q1a — Ce que couvre un test unitaire, ce que couvre un test d'intégration&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=17;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="50" y="30" width="1090" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sstitre" value="Objectif de lecture : situer les deux niveaux de test sur le même chemin d'exécution d'une requête." style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="50" y="60" width="1090" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cadre-integ" value="&lt;b&gt;PÉRIMÈTRE DU TEST D'INTÉGRATION&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 8;fillColor=none;strokeColor=#6C8EBF;strokeWidth=2;verticalAlign=top;fontSize=12;fontColor=#3B5C8C;align=left;spacingLeft=12;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="50" y="130" width="1090" height="170" as="geometry" />
+        </mxCell>
+
+        <mxCell id="b1" value="Entrée&#10;utilisateur" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="70" y="190" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" value="Construction&#10;du prompt" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="250" y="190" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" value="Appel LLM" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="430" y="190" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b4" value="Appel d'outil&#10;(API métier)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="610" y="190" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b5" value="Parsing et&#10;validation" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="790" y="190" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b6" value="Réponse" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="970" y="190" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="b1" target="b2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="b2" target="b3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="b3" target="b4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="b4" target="b5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f5" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="b5" target="b6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="leg-titre" value="&lt;b&gt;Légende&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="50" y="330" width="200" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="leg1c" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="1">
+          <mxGeometry x="60" y="365" width="26" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="leg1t" value="&lt;b&gt;Brique déterministe&lt;/b&gt; — testable unitairement avec un provider mocké. L'assertion peut porter sur une valeur exacte." style="text;html=1;align=left;verticalAlign=middle;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="365" width="1040" height="26" as="geometry" />
+        </mxCell>
+
+        <mxCell id="leg2c" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;" vertex="1" parent="1">
+          <mxGeometry x="60" y="405" width="26" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="leg2t" value="&lt;b&gt;Appel non déterministe ou externe&lt;/b&gt; — même prompt, réponses différentes. Aucune assertion exacte : on capture puis on rejoue." style="text;html=1;align=left;verticalAlign=middle;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="405" width="1040" height="26" as="geometry" />
+        </mxCell>
+
+        <mxCell id="leg3c" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="60" y="445" width="26" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="leg3t" value="&lt;b&gt;Frontière de l'application&lt;/b&gt; — entrée et sortie observées par l'utilisateur." style="text;html=1;align=left;verticalAlign=middle;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="445" width="1040" height="26" as="geometry" />
+        </mxCell>
+
+        <mxCell id="leg4c" value="" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;dashPattern=3 3;fillColor=none;strokeColor=#6C8EBF;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="60" y="485" width="26" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="leg4t" value="&lt;b&gt;Périmètre du test d'intégration&lt;/b&gt; — toute la chaîne. La session réelle est enregistrée une fois, puis rejouée à l'identique." style="text;html=1;align=left;verticalAlign=middle;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="485" width="1040" height="26" as="geometry" />
+        </mxCell>
+
+        <mxCell id="note-arb" value="&lt;b&gt;Arbitrage du rejeu&lt;/b&gt; — la session enregistrée gèle le comportement du modèle à un instant T. On renonce à bénéficier de ses améliorations dans le test, pour gagner en échange la détection de régression du code applicatif : parsing, gestion d'erreur, enchaînement des étapes." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;align=left;verticalAlign=middle;fontSize=12;spacingLeft=12;spacingRight=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="545" width="1090" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="note-ce" value="&lt;b&gt;Ce que le test unitaire ne voit pas&lt;/b&gt; : la latence réelle, les effets de concurrence, et les interactions entre récupération, modèle, outils, mémoire et réseau." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;align=left;verticalAlign=middle;fontSize=12;spacingLeft=12;spacingRight=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="635" width="1090" height="50" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

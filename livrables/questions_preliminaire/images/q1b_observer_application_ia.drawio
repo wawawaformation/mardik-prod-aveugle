@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="q1b-observer" name="Observer une application IA">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="titre" value="&lt;b&gt;Q1b — Ce que veut dire observer une application IA&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=17;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="50" y="25" width="1090" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sstitre" value="Objectif de lecture : montrer ce que la supervision classique ne voit pas, et ce qu'une trace restitue." style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="50" y="55" width="1090" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="v1-cadre" value="&lt;b&gt;1. SUPERVISION CLASSIQUE — l'application est une boîte noire&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#B85450;strokeWidth=2;verticalAlign=top;fontSize=12;fontColor=#B85450;align=left;spacingLeft=12;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="50" y="100" width="1090" height="180" as="geometry" />
+        </mxCell>
+
+        <mxCell id="v1-req" value="Requête" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="90" y="165" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="v1-boite" value="&lt;font color=&quot;#FFFFFF&quot;&gt;&lt;b&gt;?&lt;/b&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#333333;strokeColor=#000000;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="290" y="150" width="330" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="v1-rep" value="Réponse&#10;HTTP 200" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="690" y="165" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="v1-f1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="v1-req" target="v1-boite">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v1-f2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="v1-boite" target="v1-rep">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="v1-note" value="&lt;b&gt;Le service répond.&lt;/b&gt;&lt;br&gt;Rien ne dit si la réponse est juste, ni quelle étape a dérapé.&lt;br&gt;&lt;br&gt;L'application ment sur sa santé." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;align=left;verticalAlign=middle;fontSize=12;spacingLeft=10;spacingRight=10;" vertex="1" parent="1">
+          <mxGeometry x="860" y="145" width="260" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="v2-cadre" value="&lt;b&gt;2. OBSERVABILITÉ — la même requête restituée comme un arbre de spans&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#6C8EBF;strokeWidth=2;verticalAlign=top;fontSize=12;fontColor=#3B5C8C;align=left;spacingLeft=12;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="50" y="310" width="1090" height="360" as="geometry" />
+        </mxCell>
+
+        <mxCell id="v2-id" value="trace_id 7f3a91c4    ·    session_id S-1042    ·    durée totale 1 240 ms" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#3B5C8C;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="80" y="345" width="700" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ax" value="" style="endArrow=none;html=1;strokeColor=#999999;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="380" y="400" as="sourcePoint" />
+            <mxPoint x="1010" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t0" value="0 ms" style="text;html=1;align=center;verticalAlign=middle;fontSize=10;fontColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="350" y="375" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="t400" value="400 ms" style="text;html=1;align=center;verticalAlign=middle;fontSize=10;fontColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="550" y="375" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="t800" value="800 ms" style="text;html=1;align=center;verticalAlign=middle;fontSize=10;fontColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="750" y="375" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="t1200" value="1 200 ms" style="text;html=1;align=center;verticalAlign=middle;fontSize=10;fontColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="950" y="375" width="60" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="l1" value="agent_run" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="80" y="415" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="s1" value="1 240 ms" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="380" y="415" width="620" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="l2" value="  └─ retrieval" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="460" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="s2" value="180" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="390" y="460" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="m2" value="3 documents · contexte 2 100 tokens" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="500" y="460" width="330" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="l3" value="  └─ llm.call #1" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="505" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" value="520 ms" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="485" y="505" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="m3" value="TTFT 180 ms · 2 340 tokens" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="760" y="505" width="330" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="l4" value="  └─ tool.search_client" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="550" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="s4" value="210" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="750" y="550" width="105" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="m4" value="statut ok" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="870" y="550" width="220" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="l5" value="  └─ llm.call #2" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontColor=#B85450;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="80" y="595" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="s5" value="280" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="860" y="595" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="m5" value="contexte tronqué en amont  →  &lt;b&gt;ÉCHEC&lt;/b&gt;" style="text;html=1;align=right;verticalAlign=middle;fontSize=11;fontColor=#B85450;" vertex="1" parent="1">
+          <mxGeometry x="520" y="595" width="330" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="note-lect" value="&lt;b&gt;Ce que la trace apporte&lt;/b&gt; — chaque span porte son entrée, sa sortie, sa durée et ses métadonnées. L'imbrication restitue la causalité : on voit quelle étape a produit quoi, et laquelle a échoué. Ici le second appel au modèle échoue parce que le contexte assemblé en amont a été tronqué — un diagnostic impossible à établir depuis la seule réponse finale." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;align=left;verticalAlign=middle;fontSize=12;spacingLeft=12;spacingRight=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="700" width="1090" height="70" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

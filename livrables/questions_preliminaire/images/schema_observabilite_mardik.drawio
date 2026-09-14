@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="schema-observabilite" name="Schema observabilite Mardik">
+    <mxGraphModel dx="900" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1060" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="titre" value="&lt;b&gt;Schéma d'observabilité — flux instrumenté de l'application Mardik&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=15;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="30" y="15" width="840" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="sstitre" value="Points de trace et métriques positionnés sur le flux applicatif" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="30" y="40" width="840" height="18" as="geometry" />
+        </mxCell>
+
+        <mxCell id="client" value="Client (web ou mobile)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="320" y="68" width="260" height="36" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gw" value="&lt;b&gt;API Gateway&lt;/b&gt;&lt;br&gt;&lt;b&gt;SPAN RACINE&lt;/b&gt; : trace_id, session_id, user_id, feature&lt;br&gt;&lt;b&gt;MÉTRIQUES&lt;/b&gt; : req/min, latence e2e P50/P95/P99, erreurs" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;align=left;verticalAlign=middle;fontSize=10;spacingLeft=10;spacingRight=10;" vertex="1" parent="1">
+          <mxGeometry x="190" y="128" width="520" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="orch" value="&lt;b&gt;Orchestrateur d'agent&lt;/b&gt;&lt;br&gt;&lt;b&gt;SPAN&lt;/b&gt; agent_run : étape, route, état mémoire   ·   &lt;b&gt;VERSIONS&lt;/b&gt; : modèle, prompt, config&lt;br&gt;&lt;b&gt;MÉTRIQUES&lt;/b&gt; : nb d'étapes/run, retries, boucles" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;align=left;verticalAlign=middle;fontSize=10;spacingLeft=10;spacingRight=10;" vertex="1" parent="1">
+          <mxGeometry x="190" y="218" width="520" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="retr" value="&lt;b&gt;Retriever&lt;/b&gt;&lt;br&gt;&lt;b&gt;SPAN&lt;/b&gt; : source, nb chunks, taille contexte&lt;br&gt;&lt;b&gt;MÉTRIQUES&lt;/b&gt; : latence, taux vide" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;align=left;verticalAlign=middle;fontSize=10;spacingLeft=10;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="60" y="330" width="245" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="llm" value="&lt;b&gt;LLM provider&lt;/b&gt;&lt;br&gt;&lt;b&gt;SPAN&lt;/b&gt; : modèle, paramètres, prompt réel, tokens in/out, stop_reason&lt;br&gt;&lt;b&gt;MÉTRIQUES&lt;/b&gt; : TTFT, tokens, coût" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;align=left;verticalAlign=middle;fontSize=10;spacingLeft=10;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="330" y="330" width="245" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tools" value="&lt;b&gt;Tools / API métier&lt;/b&gt;&lt;br&gt;&lt;b&gt;SPAN&lt;/b&gt; : nom outil, arguments, résultat, statut&lt;br&gt;&lt;b&gt;MÉTRIQUES&lt;/b&gt; : latence, taux d'échec" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;align=left;verticalAlign=middle;fontSize=10;spacingLeft=10;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="600" y="330" width="245" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="collecte" value="&lt;b&gt;Collecte et restitution&lt;/b&gt;   —   export OpenTelemetry, trace_id propagé&lt;br&gt;&lt;br&gt;Traces → backend de traces&lt;br&gt;Métriques → séries temporelles + tableaux de bord&lt;br&gt;Logs → corrélés par trace_id / span_id&lt;br&gt;Évaluations → scores rattachés à la trace" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;align=left;verticalAlign=middle;fontSize=10;spacingLeft=10;spacingRight=10;" vertex="1" parent="1">
+          <mxGeometry x="150" y="460" width="600" height="115" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tests" value="&lt;b&gt;Tests d'intégration&lt;/b&gt; (rejeu de sessions réelles)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;align=center;verticalAlign=middle;fontSize=11;spacingLeft=10;spacingRight=10;" vertex="1" parent="1">
+          <mxGeometry x="230" y="615" width="440" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" value="(1) requête utilisateur" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;fontSize=9;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="client" target="gw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="(2) orchestration" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;fontSize=9;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="gw" target="orch">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e3" value="(3)" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;fontSize=9;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="orch" target="retr">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="(4)" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;fontSize=9;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="orch" target="llm">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="(5)" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#666666;fontSize=9;exitX=0.75;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="orch" target="tools">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#9673A6;dashed=1;exitX=0.5;exitY=1;entryX=0.2;entryY=0;" edge="1" parent="1" source="retr" target="collecte">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#9673A6;dashed=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="llm" target="collecte">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#9673A6;dashed=1;exitX=0.5;exitY=1;entryX=0.8;entryY=0;" edge="1" parent="1" source="tools" target="collecte">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e9" value="trace_id journalisé avec le résultat" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#D6B656;strokeWidth=2;fontSize=9;fontColor=#8A6D1F;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="tests" target="collecte">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="note" value="&lt;b&gt;Lecture&lt;/b&gt; — un trace_id unique, créé à l'entrée et propagé jusqu'aux appels externes, rend l'arbre de spans connexe. Les versions sont attachées au span d'orchestration : tout incident se relie à une release. La boucle est fermée par le bas : les tests d'intégration journalisent le trace_id, ce qui relie un échec de test à la trace correspondante." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CCCCCC;align=left;verticalAlign=middle;fontSize=10;spacingLeft=10;spacingRight=10;" vertex="1" parent="1">
+          <mxGeometry x="30" y="690" width="840" height="80" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
